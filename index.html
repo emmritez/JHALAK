@@ -1,0 +1,2855 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="JHALAK" />
+  <link id="pwa-manifest-link" rel="manifest" />
+  <title>JHALAK — Fun • Learn • Shine</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome for crisp icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              pink: '#ff2a5f',
+              cyan: '#00f2fe',
+              purple: '#7928ca',
+              gold: '#fbbf24',
+              dark: '#0b0b0f',
+              card: '#16161e'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbar Hiding for Vertical Feed */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* TikTok Vertical Scroll Snap */
+    .video-feed-container {
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .video-slide {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    /* Scrolling Audio Ticker Animation */
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 10s linear infinite;
+    }
+
+    /* Spinning Vinyl Record */
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spinSlow 6s linear infinite;
+    }
+
+    /* Double Tap Heart Burst */
+    @keyframes heartPop {
+      0% { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+      35% { transform: translate(-50%, -50%) scale(1.25); opacity: 1; }
+      70% { transform: translate(-50%, -50%) scale(0.95); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1.4); opacity: 0; }
+    }
+    .heart-burst {
+      animation: heartPop 0.75s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    /* Floating Gift Celebration Animation */
+    @keyframes giftFloatUp {
+      0% { transform: translateY(40px) scale(0.4) rotate(-8deg); opacity: 0; }
+      25% { transform: translateY(-20px) scale(1.25) rotate(6deg); opacity: 1; }
+      65% { transform: translateY(-140px) scale(1.1) rotate(-4deg); opacity: 1; }
+      100% { transform: translateY(-280px) scale(0.85) rotate(8deg); opacity: 0; }
+    }
+    .gift-celebrate {
+      animation: giftFloatUp 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* Subtle Gradient Overlays for Readability */
+    .gradient-top {
+      background: linear-gradient(180deg, rgba(11,11,15,0.85) 0%, rgba(11,11,15,0.35) 65%, transparent 100%);
+    }
+    .gradient-bottom {
+      background: linear-gradient(0deg, rgba(11,11,15,0.95) 0%, rgba(11,11,15,0.62) 45%, transparent 100%);
+    }
+
+    /* Animated Canvas Fallback Background */
+    .animated-bg-edu {
+      background: radial-gradient(circle at 20% 30%, #1e1b4b, #0b0b0f 70%);
+    }
+    .animated-bg-ent {
+      background: radial-gradient(circle at 80% 20%, #3b0764, #0b0b0f 70%);
+    }
+
+    /* Call Ringing Pulse */
+    @keyframes callRing {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.55); }
+      70% { transform: scale(1.03); box-shadow: 0 0 0 18px rgba(0, 242, 254, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); }
+    }
+    .animate-call-ring {
+      animation: callRing 1.8s infinite;
+    }
+
+    /* Snapchat-Style Live Video Filters */
+    .filter-none { filter: none; }
+    .filter-glow { filter: brightness(1.12) contrast(1.08) saturate(1.35) sepia(0.18); }
+    .filter-neon { filter: contrast(1.28) saturate(1.85) hue-rotate(-18deg); }
+    .filter-vintage { filter: sepia(0.55) contrast(0.95) brightness(1.05); }
+    .filter-noir { filter: grayscale(1) contrast(1.35); }
+    .filter-vivid { filter: saturate(1.65) contrast(1.15); }
+    .filter-dreamy { filter: brightness(1.15) saturate(1.25) hue-rotate(315deg) contrast(0.95); }
+    .filter-mint { filter: hue-rotate(85deg) saturate(1.3) brightness(1.06); }
+  </style>
+</head>
+<body class="bg-[#050508] text-white font-sans antialiased selection:bg-brand-pink selection:text-white overflow-hidden flex items-center justify-center min-h-screen">
+
+  <!-- Mobile Viewport Container -->
+  <div id="app-shell" class="relative w-full h-[100dvh] sm:w-[410px] sm:h-[840px] sm:max-h-[94dvh] bg-brand-dark sm:rounded-[2.4rem] sm:border-[6px] sm:border-[#22222c] shadow-[0_0_60px_rgba(0,0,0,0.9)] overflow-hidden flex flex-col">
+
+    <!-- ==================== TOP HEADER OVERLAY ==================== -->
+    <header id="top-header" class="absolute top-0 left-0 right-0 z-30 pt-3 pb-6 px-3.5 gradient-top flex items-center justify-between gap-1.5 pointer-events-none">
+      <!-- Brand Badge: JHALAK Custom Logo -->
+      <div class="flex items-center gap-1.5 pointer-events-auto shrink-0">
+        <div onclick="switchNav('home')" class="flex items-center gap-1.5 cursor-pointer group">
+          <div class="w-8 h-8 rounded-xl bg-black border border-amber-400/40 flex items-center justify-center shadow-lg overflow-hidden group-hover:scale-105 transition">
+            <img src="image_685dcc.jpg" alt="JHALAK Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
+            <!-- Custom SVG Replica Fallback of JHALAK Play + Clapperboard Logo -->
+            <svg class="hidden w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="jhalakGrad" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#fbbf24"/>
+                  <stop offset="50%" stop-color="#ff2a5f"/>
+                  <stop offset="100%" stop-color="#7928ca"/>
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" rx="20" fill="#050508"/>
+              <rect x="14" y="22" width="32" height="36" rx="4" transform="rotate(-14 14 22)" fill="#1f2937" stroke="#ffffff" stroke-width="2"/>
+              <polygon points="30,18 84,50 30,82" fill="url(#jhalakGrad)" stroke="#fbbf24" stroke-width="2" stroke-linejoin="round"/>
+              <path d="M50 34 V56 C50 64 40 66 36 60" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round"/>
+              <polygon points="56,43 68,50 56,57" fill="#ffffff"/>
+            </svg>
+          </div>
+          <span class="font-display font-extrabold text-sm tracking-wide bg-clip-text text-transparent bg-gradient-to-r from-brand-gold via-white to-brand-pink">
+            JHALAK
+          </span>
+        </div>
+      </div>
+
+      <!-- Feed Filter Tabs -->
+      <nav id="feed-tabs" class="flex items-center gap-2 pointer-events-auto bg-black/45 backdrop-blur-md px-2.5 py-1.5 rounded-full border border-white/10">
+        <button onclick="setFeedCategory('all')" data-tab="all" class="feed-tab text-[11px] font-bold text-white relative transition-all">
+          For You
+          <span class="tab-indicator absolute -bottom-1 left-1/2 -translate-x-1/2 w-3.5 h-0.5 bg-brand-cyan rounded-full"></span>
+        </button>
+        <span class="text-white/20 text-[10px]">|</span>
+        <button onclick="setFeedCategory('edu')" data-tab="edu" class="feed-tab text-[11px] font-medium text-white/65 hover:text-white relative transition-all">
+          Edu & Talent
+          <span class="tab-indicator hidden absolute -bottom-1 left-1/2 -translate-x-1/2 w-3.5 h-0.5 bg-brand-gold rounded-full"></span>
+        </button>
+        <span class="text-white/20 text-[10px]">|</span>
+        <button onclick="setFeedCategory('ent')" data-tab="ent" class="feed-tab text-[11px] font-medium text-white/65 hover:text-white relative transition-all">
+          Fun
+          <span class="tab-indicator hidden absolute -bottom-1 left-1/2 -translate-x-1/2 w-3.5 h-0.5 bg-brand-pink rounded-full"></span>
+        </button>
+      </nav>
+
+      <!-- Login Button (Guest) OR Wallet Coin Pill (Logged In) + Mute Toggle -->
+      <div class="flex items-center gap-1.5 pointer-events-auto shrink-0">
+        <!-- Simple Clean Login Button when logged out -->
+        <button id="header-login-btn" onclick="openAuthModal('login')" class="px-3 py-1 rounded-full bg-gradient-to-r from-brand-pink to-brand-purple text-white text-[11px] font-display font-bold shadow-md hover:opacity-95 transition">
+          Login
+        </button>
+
+        <!-- Wallet Coin Pill (Shown when logged in) -->
+        <button id="header-coin-pill" onclick="openBuyCoinsModal()" title="Jhalak Wallet" class="hidden items-center gap-1 px-2 py-1 rounded-full bg-brand-gold/20 hover:bg-brand-gold/30 border border-brand-gold/50 text-brand-gold text-[11px] font-extrabold transition">
+          <i class="fa-solid fa-coins text-[10px]"></i>
+          <span id="header-coin-balance">15</span>
+          <i id="header-coin-plus" class="fa-solid fa-plus text-[9px] bg-brand-gold text-black rounded-full w-3.5 h-3.5 flex items-center justify-center"></i>
+        </button>
+
+        <button id="global-mute-btn" onclick="toggleGlobalMute()" title="Toggle Sound" class="w-7 h-7 rounded-full bg-black/45 backdrop-blur-md border border-white/15 flex items-center justify-center text-white/90 hover:bg-white/20 transition">
+          <i id="global-mute-icon" class="fa-solid fa-volume-xmark text-[11px] text-brand-pink"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ==================== MAIN VIEWS CONTAINER ==================== -->
+    <main class="relative flex-1 w-full h-full overflow-hidden">
+
+      <!-- 1. HOME VERTICAL VIDEO FEED -->
+      <section id="view-home" class="w-full h-full">
+        <div id="video-feed" class="video-feed-container w-full h-full overflow-y-scroll no-scrollbar pb-16">
+          <!-- Video slides injected dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- 2. DISCOVER & TALENT LEADERBOARD VIEW -->
+      <section id="view-discover" class="hidden w-full h-full overflow-y-auto no-scrollbar pt-6 pb-24 px-4 bg-brand-dark">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display font-extrabold text-lg bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan to-brand-pink">
+            Discover JHALAK
+          </h2>
+          <button onclick="openBuyCoinsModal()" class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/20 border border-brand-gold/40 text-brand-gold text-xs font-bold">
+            <i class="fa-solid fa-coins"></i> <span class="sync-coin-balance">15</span> Coins
+          </button>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="relative mb-5">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+          <input id="discover-search" type="text" oninput="filterDiscover(this.value)" placeholder="Search science tricks, talent, comedy..." class="w-full bg-brand-card border border-white/10 rounded-2xl py-3 pl-10 pr-4 text-sm text-white placeholder-gray-400 focus:outline-none focus:border-brand-cyan transition" />
+        </div>
+
+        <!-- Promo Banner -->
+        <div class="rounded-2xl p-4 mb-6 bg-gradient-to-r from-indigo-900/90 via-purple-900/80 to-pink-900/80 border border-white/15 relative overflow-hidden">
+          <div class="relative z-10">
+            <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-brand-gold text-black mb-1.5">
+              JHALAK Creator Reward
+            </span>
+            <h3 class="font-display font-bold text-base text-white">Send Gifts & Support Talent! 🎁</h3>
+            <p class="text-xs text-gray-200 mt-1">Creators earn 70% share on every Heart, Rose, Bouquet & Crown gift received!</p>
+            <div class="flex items-center gap-2 mt-3">
+              <button onclick="openUploadModal()" class="px-3.5 py-1.5 rounded-xl bg-white text-black font-semibold text-xs hover:bg-gray-100 transition">
+                + Upload Reel
+              </button>
+              <button onclick="openBuyCoinsModal()" class="px-3.5 py-1.5 rounded-xl bg-brand-gold text-black font-bold text-xs hover:opacity-90 transition">
+                Buy Coins (₹10)
+              </button>
+            </div>
+          </div>
+          <i class="fa-solid fa-gift text-6xl text-white/10 absolute -right-2 -bottom-2 rotate-12"></i>
+        </div>
+
+        <!-- Trending Hashtags -->
+        <h4 class="font-display font-bold text-sm text-gray-200 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-fire text-brand-pink"></i> Trending Categories
+        </h4>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <button onclick="jumpToCategory('edu')" class="px-3 py-1.5 rounded-full bg-brand-card border border-brand-gold/30 text-xs font-medium text-brand-gold hover:bg-brand-gold/10 transition">#ScienceMagic</button>
+          <button onclick="jumpToCategory('edu')" class="px-3 py-1.5 rounded-full bg-brand-card border border-brand-cyan/30 text-xs font-medium text-brand-cyan hover:bg-brand-cyan/10 transition">#StudentTalent</button>
+          <button onclick="jumpToCategory('edu')" class="px-3 py-1.5 rounded-full bg-brand-card border border-purple-400/30 text-xs font-medium text-purple-300 hover:bg-purple-400/10 transition">#MathTricks</button>
+          <button onclick="jumpToCategory('ent')" class="px-3 py-1.5 rounded-full bg-brand-card border border-brand-pink/30 text-xs font-medium text-brand-pink hover:bg-brand-pink/10 transition">#DesiComedy</button>
+          <button onclick="jumpToCategory('edu')" class="px-3 py-1.5 rounded-full bg-brand-card border border-emerald-400/30 text-xs font-medium text-emerald-300 hover:bg-emerald-400/10 transition">#ArtAndSketch</button>
+        </div>
+
+        <!-- Creator & Student Leaderboard -->
+        <h4 class="font-display font-bold text-sm text-gray-200 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-trophy text-brand-gold"></i> Top Creators & Rising Stars
+        </h4>
+        <div id="leaderboard-list" class="space-y-3">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </section>
+
+      <!-- 3. MESSAGES / INBOX VIEW (PERSONAL CHAT, AUDIO & VIDEO CALLS) -->
+      <section id="view-messages" class="hidden w-full h-full overflow-y-auto no-scrollbar pt-6 pb-24 px-4 bg-brand-dark">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="font-display font-extrabold text-lg bg-clip-text text-transparent bg-gradient-to-r from-brand-cyan to-brand-pink">
+              JHALAK Connect
+            </h2>
+            <p class="text-[11px] text-gray-400">Personal Chat • Audio & Video Calls</p>
+          </div>
+          <span id="call-rate-badge" class="px-2.5 py-1 rounded-full bg-brand-gold/15 border border-brand-gold/40 text-brand-gold text-[10px] font-bold">
+            Audio 5🪙/m • Video 10🪙/m
+          </span>
+        </div>
+
+        <!-- Quick Online Creators Strip -->
+        <div class="mb-4">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">Online Creators & Mentors</div>
+          <div id="online-creators-strip" class="flex items-center gap-3 overflow-x-auto no-scrollbar pb-1">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Direct Message Threads List -->
+        <div class="text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-2">Direct Messages</div>
+        <div id="chat-threads-list" class="space-y-2.5">
+          <!-- Populated dynamically -->
+        </div>
+      </section>
+
+      <!-- 4. SAVED / BOOKMARKED REELS VIEW -->
+      <section id="view-saved" class="hidden w-full h-full overflow-y-auto no-scrollbar pt-6 pb-24 px-4 bg-brand-dark">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="font-display font-extrabold text-lg text-white">Saved Collection</h2>
+          <span id="saved-count-badge" class="px-2.5 py-0.5 rounded-full bg-white/10 text-xs text-gray-300">0 Saved</span>
+        </div>
+        <div id="saved-grid" class="grid grid-cols-2 gap-3">
+          <!-- Saved videos rendered here -->
+        </div>
+      </section>
+
+      <!-- 5. USER PROFILE, CREATOR WALLET & ADMIN PANEL (WHEN ADMIN LOGGED IN) -->
+      <section id="view-profile" class="hidden w-full h-full overflow-y-auto no-scrollbar pt-6 pb-24 px-4 bg-brand-dark">
+
+        <!-- GUEST / LOGGED-OUT VIEW -->
+        <div id="profile-guest-view" class="flex flex-col items-center justify-center text-center py-10 px-4">
+          <div class="w-24 h-24 rounded-3xl bg-black border-2 border-brand-gold/50 shadow-[0_0_30px_rgba(255,42,95,0.35)] overflow-hidden mb-4">
+            <img src="image_685dcc.jpg" alt="JHALAK Official Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
+            <svg class="hidden w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="jhalakGradGuest" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#fbbf24"/>
+                  <stop offset="50%" stop-color="#ff2a5f"/>
+                  <stop offset="100%" stop-color="#7928ca"/>
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" fill="#050508"/>
+              <polygon points="28,16 84,50 28,84" fill="url(#jhalakGradGuest)" stroke="#fbbf24" stroke-width="2"/>
+              <path d="M50 32 V56 C50 65 39 67 35 60" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+              <polygon points="57,42 70,50 57,58" fill="#ffffff"/>
+            </svg>
+          </div>
+          <h2 class="font-display font-extrabold text-xl text-white">Welcome to JHALAK</h2>
+          <p class="text-xs text-gray-400 mt-1.5 max-w-xs leading-relaxed">
+            Apne reels upload karne, creators ko virtual gifts bhejne aur coin wallet manage karne ke liye login karein.
+          </p>
+
+          <div class="flex items-center gap-3 w-full max-w-xs mt-6">
+            <button onclick="openAuthModal('login')" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-brand-pink to-brand-purple font-display font-bold text-xs text-white shadow-lg hover:opacity-95 transition">
+              Login
+            </button>
+            <button onclick="openAuthModal('signup')" class="flex-1 py-3 rounded-2xl bg-brand-card border border-white/15 hover:border-white/30 font-display font-bold text-xs text-white transition">
+              Create Account
+            </button>
+          </div>
+        </div>
+
+        <!-- LOGGED-IN USER / ADMIN PROFILE VIEW -->
+        <div id="profile-authenticated-view" class="hidden">
+          <!-- Top Profile Bar with Install App & Logout Button -->
+          <div class="flex items-center justify-between mb-2">
+            <span id="profile-account-type-label" class="text-[11px] font-bold text-gray-400">Creator Studio</span>
+            <div class="flex items-center gap-1.5">
+              <button onclick="triggerAppInstall()" class="px-2.5 py-1 rounded-full bg-brand-cyan/15 hover:bg-brand-cyan/25 border border-brand-cyan/40 text-brand-cyan text-[11px] font-bold flex items-center gap-1 transition">
+                <i class="fa-solid fa-download text-[10px]"></i> Install App
+              </button>
+              <button onclick="logoutUser()" class="px-3 py-1 rounded-full bg-white/10 hover:bg-rose-500/20 border border-white/15 hover:border-rose-500/40 text-gray-300 hover:text-rose-300 text-[11px] font-semibold flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-right-from-bracket text-[10px]"></i> Logout
+              </button>
+            </div>
+          </div>
+
+          <div class="flex flex-col items-center text-center">
+            <div class="relative">
+              <div class="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-brand-pink via-brand-gold to-brand-cyan">
+                <div id="profile-avatar-initials" class="w-full h-full rounded-full bg-brand-card flex items-center justify-center text-2xl font-display font-bold text-white">
+                  RS
+                </div>
+              </div>
+              <span id="profile-role-badge" class="absolute -bottom-1 right-0 px-2 py-0.5 rounded-full bg-brand-gold text-black text-[10px] font-extrabold shadow">
+                Creator
+              </span>
+            </div>
+            <h2 id="profile-display-name" class="font-display font-bold text-lg mt-2.5 text-white">Rohan Sharma</h2>
+            <p id="profile-display-handle" class="text-xs text-gray-400 mt-0.5">@rohan_jhansi • Fun • Learn • Shine ✨</p>
+
+            <!-- Stats Row -->
+            <div class="grid grid-cols-3 gap-3 w-full mt-4 py-3 px-2 rounded-2xl bg-brand-card border border-white/10">
+              <div>
+                <div class="font-display font-bold text-base text-white">12</div>
+                <div class="text-[11px] text-gray-400">Following</div>
+              </div>
+              <div class="border-x border-white/10">
+                <div class="font-display font-bold text-base text-white">1.4K</div>
+                <div class="text-[11px] text-gray-400">Followers</div>
+              </div>
+              <div>
+                <div class="font-display font-bold text-base text-brand-pink">8.2K</div>
+                <div class="text-[11px] text-gray-400">Likes</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ==================== CREATOR & COIN WALLET CARD ==================== -->
+          <div class="mt-4 p-4 rounded-2xl bg-gradient-to-br from-[#1b1b26] to-[#13131b] border border-brand-gold/30 shadow-lg">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-display font-bold text-brand-gold flex items-center gap-1.5">
+                <i class="fa-solid fa-wallet"></i> JHALAK Wallet & Earnings
+              </span>
+              <span class="text-[10px] text-gray-400">1 Coin = ₹1</span>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2 text-center mb-3.5">
+              <div class="p-2.5 rounded-xl bg-black/40 border border-white/10">
+                <div class="text-[10px] text-gray-400">Coin Balance</div>
+                <div class="font-display font-extrabold text-sm text-brand-gold mt-0.5">
+                  <span class="sync-coin-balance">15</span> <i class="fa-solid fa-coins text-[11px]"></i>
+                </div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-black/40 border border-white/10">
+                <div class="text-[10px] text-gray-400">Creator (70%)</div>
+                <div id="creator-earnings-display" class="font-display font-extrabold text-sm text-emerald-400 mt-0.5">₹0.00</div>
+              </div>
+              <div class="p-2.5 rounded-xl bg-black/40 border border-white/10">
+                <div class="text-[10px] text-gray-400">Platform (30%)</div>
+                <div id="platform-revenue-display" class="font-display font-extrabold text-sm text-brand-cyan mt-0.5">₹0.00</div>
+              </div>
+            </div>
+
+            <button onclick="openBuyCoinsModal()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-gold to-amber-500 text-black font-display font-extrabold text-xs shadow hover:opacity-95 transition flex items-center justify-center gap-1.5">
+              <i class="fa-solid fa-plus-circle"></i> Add Coins via UPI (₹10 = 10 Coins)
+            </button>
+          </div>
+
+          <!-- ==================== ADMIN PANEL (ONLY VISIBLE WHEN ADMIN LOGGED IN) ==================== -->
+          <div id="admin-exclusive-section" class="hidden mt-4 rounded-2xl bg-brand-card border border-brand-gold/40 overflow-hidden shadow-lg">
+            <button onclick="toggleAdminPanel()" class="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-amber-500/15 to-pink-500/15 hover:opacity-95 transition">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span class="font-display font-bold text-xs text-white">Admin Control Panel</span>
+                <span id="pending-badge-count" class="px-2 py-0.5 rounded-full bg-brand-pink text-white text-[10px] font-bold">1 Pending</span>
+              </div>
+              <i id="admin-chevron" class="fa-solid fa-chevron-down text-xs text-gray-300 transition-transform"></i>
+            </button>
+
+            <div id="admin-panel-body" class="p-3.5 space-y-3 border-t border-white/10">
+              <div class="flex items-center justify-between text-[11px] text-gray-400 bg-black/30 px-3 py-2 rounded-xl">
+                <span>Admin UPI No: <strong class="text-white">300113890</strong></span>
+                <span class="text-brand-cyan font-semibold">₹10 = 10 Coins</span>
+              </div>
+
+              <!-- UPI Requests Queue -->
+              <div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">UPI Coin Top-up Requests</div>
+                <div id="admin-requests-list" class="space-y-2.5">
+                  <!-- Pending UPI requests rendered here -->
+                </div>
+              </div>
+
+              <!-- Live Feed Moderation & Demo Reset -->
+              <div class="pt-2 border-t border-white/10 space-y-2.5">
+                <div class="flex items-center justify-between">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1">
+                    <i class="fa-solid fa-crown"></i> Live Feed Moderation
+                  </span>
+                  <button onclick="resetDemoData()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold text-gray-200 transition">
+                    <i class="fa-solid fa-rotate-right mr-1"></i>Reset Demo
+                  </button>
+                </div>
+                <div id="admin-feed-moderation-list" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar">
+                  <!-- Feed videos list with delete option -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User's Uploaded Videos -->
+          <div class="mt-5">
+            <h3 class="font-display font-bold text-sm text-gray-200 mb-3 flex items-center gap-2">
+              <i class="fa-solid fa-film text-brand-cyan"></i> My Uploads
+            </h3>
+            <div id="my-uploads-grid" class="grid grid-cols-2 gap-3">
+              <!-- User uploaded videos appear here -->
+            </div>
+          </div>
+
+          <!-- Installable PWA App Card -->
+          <div class="mt-5 p-3.5 rounded-2xl bg-gradient-to-r from-cyan-950/80 to-purple-950/80 border border-brand-cyan/30 flex items-center justify-between gap-3">
+            <div>
+              <div class="text-xs font-display font-bold text-white flex items-center gap-1.5">
+                <i class="fa-brands fa-android text-emerald-400"></i> Install JHALAK in Phone App Section
+              </div>
+              <p class="text-[10px] text-gray-300 mt-0.5">Android App Drawer (.APK / WebAPK) mein native app ki tarah install karein.</p>
+            </div>
+            <button onclick="triggerAppInstall()" class="px-3 py-2 rounded-xl bg-brand-cyan text-black font-display font-extrabold text-[11px] shrink-0 shadow hover:opacity-90 transition">
+              Install App 📲
+            </button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ==================== BOTTOM NAVIGATION BAR ==================== -->
+    <footer class="absolute bottom-0 left-0 right-0 z-30 h-16 bg-[#0b0b0f]/95 backdrop-blur-lg border-t border-white/10 px-1.5 flex items-center justify-around">
+      <button onclick="switchNav('home')" data-nav="home" class="nav-btn flex flex-col items-center justify-center gap-1 text-white w-12">
+        <i class="fa-solid fa-house text-sm"></i>
+        <span class="text-[10px] font-semibold">Home</span>
+      </button>
+
+      <button onclick="switchNav('discover')" data-nav="discover" class="nav-btn flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 w-12">
+        <i class="fa-solid fa-compass text-sm"></i>
+        <span class="text-[10px] font-medium">Discover</span>
+      </button>
+
+      <!-- Center Upload "+" Button -->
+      <button onclick="openUploadModal()" aria-label="Upload Video" class="relative -top-2 group flex items-center justify-center mx-0.5">
+        <div class="absolute inset-0 bg-gradient-to-r from-brand-cyan via-brand-pink to-brand-gold rounded-2xl blur opacity-75 group-hover:opacity-100 transition"></div>
+        <div class="relative w-11 h-8 rounded-xl bg-white text-black flex items-center justify-center font-bold text-base shadow-lg group-active:scale-95 transition">
+          <i class="fa-solid fa-plus"></i>
+        </div>
+      </button>
+
+      <button onclick="switchNav('messages')" data-nav="messages" class="nav-btn flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 w-12 relative">
+        <i class="fa-solid fa-paper-plane text-sm"></i>
+        <span class="text-[10px] font-medium">Chat</span>
+        <span id="nav-unread-dot" class="absolute top-1 right-2.5 w-2 h-2 rounded-full bg-brand-pink"></span>
+      </button>
+
+      <button onclick="switchNav('saved')" data-nav="saved" class="nav-btn flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 w-12">
+        <i class="fa-solid fa-bookmark text-sm"></i>
+        <span class="text-[10px] font-medium">Saved</span>
+      </button>
+
+      <button onclick="switchNav('profile')" data-nav="profile" class="nav-btn flex flex-col items-center justify-center gap-1 text-gray-500 hover:text-gray-300 w-12 relative">
+        <i class="fa-solid fa-user text-sm"></i>
+        <span class="text-[10px] font-medium">Profile</span>
+        <span id="nav-admin-dot" class="hidden absolute top-1 right-2.5 w-2 h-2 rounded-full bg-brand-gold"></span>
+      </button>
+    </footer>
+
+    <!-- ==================== 1-TO-1 PERSONAL CHAT CONVERSATION DRAWER ==================== -->
+    <div id="chat-conversation-modal" class="hidden absolute inset-0 z-40 bg-[#0d0d14] flex flex-col">
+      <!-- Chat Top Header with Audio & Video Call Triggers -->
+      <div class="px-3.5 py-3 bg-[#151520] border-b border-white/10 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <button onclick="closeChatConversation()" class="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white">
+            <i class="fa-solid fa-arrow-left text-xs"></i>
+          </button>
+          <div id="chat-peer-avatar" class="w-9 h-9 rounded-full bg-gradient-to-tr from-amber-400 to-orange-600 flex items-center justify-center font-display font-bold text-xs text-white">
+            SR
+          </div>
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span id="chat-peer-name" class="font-display font-bold text-xs text-white">@science_with_ritesh</span>
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+            </div>
+            <span id="chat-peer-subtitle" class="text-[10px] text-emerald-400">Online • Replies fast</span>
+          </div>
+        </div>
+
+        <!-- Audio Call & Video Call Action Buttons -->
+        <div class="flex items-center gap-2">
+          <button onclick="startCall('audio')" title="Audio Call (5 Coins/min)" class="w-9 h-9 rounded-full bg-brand-cyan/15 hover:bg-brand-cyan/25 border border-brand-cyan/40 text-brand-cyan flex items-center justify-center transition">
+            <i class="fa-solid fa-phone text-xs"></i>
+          </button>
+          <button onclick="startCall('video')" title="Video Call (10 Coins/min)" class="w-9 h-9 rounded-full bg-brand-pink/15 hover:bg-brand-pink/25 border border-brand-pink/40 text-brand-pink flex items-center justify-center transition">
+            <i class="fa-solid fa-video text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Messages Feed -->
+      <div id="chat-messages-container" class="flex-1 overflow-y-auto p-4 space-y-3 no-scrollbar">
+        <!-- Messages rendered dynamically -->
+      </div>
+
+      <!-- Quick Chat Gift / Sticker Bar -->
+      <div class="px-3 py-1.5 bg-[#12121a] border-t border-white/5 flex items-center gap-2 overflow-x-auto no-scrollbar">
+        <span class="text-[10px] text-gray-400 shrink-0">Quick Send:</span>
+        <button type="button" onclick="sendQuickChatSticker('❤️')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/15 text-xs">❤️</button>
+        <button type="button" onclick="sendQuickChatSticker('🔥')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/15 text-xs">🔥</button>
+        <button type="button" onclick="sendQuickChatSticker('👏')" class="px-2 py-0.5 rounded-full bg-white/5 hover:bg-white/15 text-xs">👏</button>
+        <button type="button" onclick="sendQuickChatSticker('Namaste! 🙏')" class="px-2.5 py-0.5 rounded-full bg-white/5 hover:bg-white/15 text-[11px] text-gray-200 shrink-0">Namaste! 🙏</button>
+        <button type="button" onclick="sendQuickChatSticker('Collab karein? 🎬')" class="px-2.5 py-0.5 rounded-full bg-white/5 hover:bg-white/15 text-[11px] text-gray-200 shrink-0">Collab? 🎬</button>
+      </div>
+
+      <!-- Chat Message Input Form -->
+      <form onsubmit="sendChatMessage(event)" class="p-3 bg-[#151520] border-t border-white/10 flex items-center gap-2">
+        <input id="chat-message-input" type="text" required placeholder="Type a personal message..." class="flex-1 bg-black/40 border border-white/15 rounded-full px-4 py-2.5 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-cyan" />
+        <button type="submit" class="w-9 h-9 rounded-full bg-gradient-to-r from-brand-cyan to-brand-pink text-white flex items-center justify-center shadow hover:opacity-90 transition">
+          <i class="fa-solid fa-paper-plane text-xs"></i>
+        </button>
+      </form>
+    </div>
+
+    <!-- ==================== ACTIVE AUDIO / VIDEO CALL OVERLAY ==================== -->
+    <div id="active-call-modal" class="hidden absolute inset-0 z-50 bg-[#09090f] flex flex-col justify-between p-6 overflow-hidden">
+      <!-- Background Video Simulation (Shown only in Video Call mode) -->
+      <div id="video-call-stage" class="hidden absolute inset-0 z-0">
+        <video id="remote-call-video" src="https://assets.mixkit.co/videos/preview/mixkit-woman-playing-an-acoustic-guitar-in-a-park-42718-large.mp4" class="w-full h-full object-cover opacity-65" loop muted playsinline></video>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/90"></div>
+
+        <!-- Self Picture-in-Picture (PiP) Local Camera Preview -->
+        <div id="local-pip-box" class="absolute top-16 right-4 w-24 h-36 rounded-2xl bg-[#1a1a26] border-2 border-brand-cyan/70 shadow-2xl overflow-hidden flex flex-col items-center justify-center">
+          <video id="local-webcam-video" class="hidden w-full h-full object-cover" autoplay muted playsinline></video>
+          <div id="local-pip-fallback" class="flex flex-col items-center text-center p-2">
+            <div class="w-9 h-9 rounded-full bg-gradient-to-tr from-brand-pink to-brand-purple flex items-center justify-center font-bold text-xs text-white mb-1">
+              YOU
+            </div>
+            <span class="text-[9px] text-gray-300 font-semibold">Camera On</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Call Info Header -->
+      <div class="relative z-10 flex flex-col items-center text-center mt-6">
+        <span id="call-mode-badge" class="px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-[11px] font-bold uppercase tracking-wider text-brand-cyan mb-4">
+          JHALAK HD Audio Call
+        </span>
+
+        <div id="call-avatar-ring" class="w-24 h-24 rounded-full bg-gradient-to-tr from-brand-cyan via-brand-purple to-brand-pink p-1 animate-call-ring mb-3">
+          <div id="call-peer-initials" class="w-full h-full rounded-full bg-brand-dark flex items-center justify-center font-display font-extrabold text-2xl text-white">
+            SR
+          </div>
+        </div>
+
+        <h3 id="call-peer-handle" class="font-display font-extrabold text-xl text-white">@science_with_ritesh</h3>
+        <p id="call-status-timer" class="text-sm font-mono font-bold text-emerald-400 mt-1">Connecting...</p>
+        <span id="call-billing-pill" class="mt-2 px-3 py-0.5 rounded-full bg-black/60 border border-brand-gold/40 text-brand-gold text-[11px] font-bold">
+          5 Coins / min
+        </span>
+      </div>
+
+      <!-- Bottom Call Controls -->
+      <div class="relative z-10 mb-6">
+        <div class="flex items-center justify-center gap-5">
+          <button id="call-mute-btn" onclick="toggleCallMute()" class="w-13 h-13 p-3.5 rounded-full bg-white/15 backdrop-blur-md hover:bg-white/25 text-white flex items-center justify-center transition">
+            <i id="call-mute-icon" class="fa-solid fa-microphone text-base"></i>
+          </button>
+
+          <button id="call-cam-btn" onclick="toggleCallCamera()" class="hidden w-13 h-13 p-3.5 rounded-full bg-white/15 backdrop-blur-md hover:bg-white/25 text-white flex items-center justify-center transition">
+            <i id="call-cam-icon" class="fa-solid fa-video text-base"></i>
+          </button>
+
+          <button id="call-speaker-btn" onclick="toggleCallSpeaker()" class="w-13 h-13 p-3.5 rounded-full bg-white/15 backdrop-blur-md hover:bg-white/25 text-white flex items-center justify-center transition">
+            <i id="call-speaker-icon" class="fa-solid fa-volume-high text-base text-brand-cyan"></i>
+          </button>
+
+          <button onclick="endActiveCall()" class="w-14 h-14 rounded-full bg-rose-600 hover:bg-rose-500 text-white flex items-center justify-center shadow-[0_0_25px_rgba(225,29,72,0.7)] active:scale-95 transition">
+            <i class="fa-solid fa-phone-slash text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== VIRTUAL GIFT DRAWER (SLIDE-UP) ==================== -->
+    <div id="gift-modal" class="hidden absolute inset-0 z-40 bg-black/65 backdrop-blur-xs flex flex-col justify-end">
+      <div class="bg-[#14141e] w-full rounded-t-3xl border-t border-brand-gold/30 p-4 pb-6 shadow-2xl">
+        <!-- Drawer Header -->
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
+          <div>
+            <h3 class="font-display font-bold text-sm text-white flex items-center gap-1.5">
+              <span>Send Virtual Gift</span>
+              <span id="gift-target-handle" class="text-brand-cyan text-xs">@creator</span>
+            </h3>
+            <p class="text-[11px] text-gray-400">70% goes directly to Creator • 30% JHALAK Platform</p>
+          </div>
+          <button onclick="closeGiftModal()" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+
+        <!-- User Coin Balance Strip -->
+        <div class="flex items-center justify-between my-3 px-3 py-2 rounded-xl bg-black/40 border border-white/10">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-coins text-brand-gold text-sm"></i>
+            <span class="text-xs text-gray-300">Your Balance: <strong class="sync-coin-balance text-white">15</strong> <span id="gift-balance-suffix">Coins</span></span>
+          </div>
+          <button onclick="closeGiftModal(); openBuyCoinsModal();" class="px-2.5 py-1 rounded-lg bg-brand-gold text-black font-extrabold text-[11px] hover:opacity-90 transition">
+            + Buy Coins
+          </button>
+        </div>
+
+        <!-- Gift Items Grid (Heart, Flower, Bouquet, Crown) -->
+        <div class="grid grid-cols-2 gap-2.5 my-2">
+          <button onclick="sendGift('❤️', 'Red Heart', 2)" class="p-3 rounded-2xl bg-brand-card hover:bg-white/10 border border-white/10 hover:border-brand-pink flex flex-col items-center text-center transition group">
+            <span class="text-3xl mb-1 group-hover:scale-125 transition">❤️</span>
+            <span class="font-display font-bold text-xs text-white">Red Heart</span>
+            <span data-default="2 Coins (₹2)" class="gift-price-tag mt-1 px-2 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold text-[10px] font-bold">2 Coins (₹2)</span>
+          </button>
+
+          <button onclick="sendGift('🌹', 'Rose Flower', 5)" class="p-3 rounded-2xl bg-brand-card hover:bg-white/10 border border-white/10 hover:border-rose-400 flex flex-col items-center text-center transition group">
+            <span class="text-3xl mb-1 group-hover:scale-125 transition">🌹</span>
+            <span class="font-display font-bold text-xs text-white">Rose Flower</span>
+            <span data-default="5 Coins (₹5)" class="gift-price-tag mt-1 px-2 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold text-[10px] font-bold">5 Coins (₹5)</span>
+          </button>
+
+          <button onclick="sendGift('💐', 'Grand Bouquet', 10)" class="p-3 rounded-2xl bg-brand-card hover:bg-white/10 border border-brand-gold/40 hover:border-brand-gold flex flex-col items-center text-center transition group relative">
+            <span class="absolute top-1.5 right-1.5 px-1.5 py-0.2 rounded bg-brand-pink text-[8px] font-extrabold text-white">POPULAR</span>
+            <span class="text-3xl mb-1 group-hover:scale-125 transition">💐</span>
+            <span class="font-display font-bold text-xs text-white">Grand Bouquet</span>
+            <span data-default="10 Coins (₹10)" class="gift-price-tag mt-1 px-2 py-0.5 rounded-full bg-brand-gold/20 text-brand-gold text-[10px] font-bold">10 Coins (₹10)</span>
+          </button>
+
+          <button onclick="sendGift('👑', 'Jhalak Crown', 25)" class="p-3 rounded-2xl bg-brand-card hover:bg-white/10 border border-white/10 hover:border-brand-cyan flex flex-col items-center text-center transition group">
+            <span class="text-3xl mb-1 group-hover:scale-125 transition">👑</span>
+            <span class="font-display font-bold text-xs text-white">Jhalak Crown</span>
+            <span data-default="25 Coins (₹25)" class="gift-price-tag mt-1 px-2 py-0.5 rounded-full bg-brand-gold/15 text-brand-gold text-[10px] font-bold">25 Coins (₹25)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== UNIFIED LOGIN & CREATE ACCOUNT MODAL ==================== -->
+    <div id="auth-modal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-5">
+      <div class="bg-[#161622] w-full max-w-sm rounded-3xl border border-white/15 p-5 shadow-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-xl bg-black border border-brand-gold/50 overflow-hidden shadow">
+              <img src="image_685dcc.jpg" alt="JHALAK Logo" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
+              <svg class="hidden w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" fill="#050508"/>
+                <polygon points="28,16 84,50 28,84" fill="#ff2a5f" stroke="#fbbf24" stroke-width="3"/>
+                <path d="M50 32 V56 C50 65 39 67 35 60" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <span class="font-display font-extrabold text-sm tracking-wide text-white block leading-tight">JHALAK</span>
+              <span class="text-[10px] text-brand-gold font-semibold">Short Video App</span>
+            </div>
+          </div>
+          <button onclick="closeAuthModal()" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Clean Tab Switcher: Login vs Create Account -->
+        <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-black/50 border border-white/10 mb-4">
+          <button type="button" id="auth-tab-login" onclick="switchAuthTab('login')" class="py-2 rounded-lg bg-white text-black font-display font-bold text-xs transition">
+            Login
+          </button>
+          <button type="button" id="auth-tab-signup" onclick="switchAuthTab('signup')" class="py-2 rounded-lg text-gray-400 hover:text-white font-display font-bold text-xs transition">
+            Create Account
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <form id="login-form" onsubmit="handleAuthLogin(event)" class="space-y-3">
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Username / Mobile No. / Email</label>
+            <input
+              id="login-identifier"
+              type="text"
+              required
+              placeholder="e.g., rohan_jhansi or 9876543210"
+              class="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-cyan"
+            />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Password</label>
+            <input
+              id="login-password"
+              type="password"
+              required
+              placeholder="Enter your password"
+              class="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-cyan"
+            />
+          </div>
+
+          <button type="submit" class="w-full py-3 mt-1 rounded-xl bg-gradient-to-r from-brand-pink via-brand-purple to-brand-cyan text-white font-display font-extrabold text-xs shadow-lg hover:opacity-95 transition">
+            Login to JHALAK ✨
+          </button>
+        </form>
+
+        <!-- Create Account Form -->
+        <form id="signup-form" onsubmit="handleAuthSignup(event)" class="hidden space-y-3">
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Full Name</label>
+            <input
+              id="signup-name"
+              type="text"
+              required
+              placeholder="e.g., Priya Verma"
+              class="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-cyan"
+            />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Choose Username or Mobile</label>
+            <input
+              id="signup-username"
+              type="text"
+              required
+              placeholder="e.g., priya_talent"
+              class="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-cyan"
+            />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-gray-300 mb-1">Create Password</label>
+            <input
+              id="signup-password"
+              type="password"
+              required
+              placeholder="Minimum 4 characters"
+              class="w-full bg-black/50 border border-white/15 rounded-xl px-3.5 py-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-cyan"
+            />
+          </div>
+
+          <button type="submit" class="w-full py-3 mt-1 rounded-xl bg-gradient-to-r from-brand-gold to-amber-500 text-black font-display font-extrabold text-xs shadow-lg hover:opacity-95 transition">
+            Create Account (+15 Free Coins 🎁)
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== BUY COINS (ADMIN UPI PAYMENT MODAL) ==================== -->
+    <div id="buy-coins-modal" class="hidden absolute inset-0 z-50 bg-[#0b0b0f]/95 backdrop-blur-md flex flex-col p-4 overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <h2 class="font-display font-extrabold text-base text-white flex items-center gap-2">
+            <i class="fa-solid fa-coins text-brand-gold"></i> Buy JHALAK Coins
+          </h2>
+          <p class="text-[11px] text-gray-400">Rate: ₹10 = 10 Coins • Direct Admin UPI</p>
+        </div>
+        <button onclick="closeBuyCoinsModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Step 1: Select Package -->
+      <div class="mb-3">
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">1. Choose Coin Pack</label>
+        <div class="grid grid-cols-4 gap-2" id="coin-pack-grid">
+          <button type="button" onclick="selectCoinPack(10, 10, this)" class="coin-pack-btn p-2 rounded-xl bg-brand-gold/20 border-2 border-brand-gold text-center transition">
+            <div class="font-display font-extrabold text-xs text-white">10 Coins</div>
+            <div class="text-[11px] font-bold text-brand-gold">₹10</div>
+          </button>
+          <button type="button" onclick="selectCoinPack(20, 20, this)" class="coin-pack-btn p-2 rounded-xl bg-brand-card border border-white/15 text-center hover:border-white/40 transition">
+            <div class="font-display font-extrabold text-xs text-white">20 Coins</div>
+            <div class="text-[11px] font-bold text-gray-300">₹20</div>
+          </button>
+          <button type="button" onclick="selectCoinPack(50, 55, this)" class="coin-pack-btn p-2 rounded-xl bg-brand-card border border-white/15 text-center hover:border-white/40 transition relative">
+            <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 rounded bg-emerald-500 text-black text-[8px] font-extrabold">+5 FREE</span>
+            <div class="font-display font-extrabold text-xs text-white">55 Coins</div>
+            <div class="text-[11px] font-bold text-gray-300">₹50</div>
+          </button>
+          <button type="button" onclick="selectCoinPack(100, 115, this)" class="coin-pack-btn p-2 rounded-xl bg-brand-card border border-white/15 text-center hover:border-white/40 transition relative">
+            <span class="absolute -top-2 left-1/2 -translate-x-1/2 px-1.5 rounded bg-brand-pink text-white text-[8px] font-extrabold">+15 FREE</span>
+            <div class="font-display font-extrabold text-xs text-white">115 Coins</div>
+            <div class="text-[11px] font-bold text-gray-300">₹100</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Admin UPI QR & Mobile Number -->
+      <div class="p-3.5 rounded-2xl bg-brand-card border border-white/15 mb-3 text-center">
+        <span class="text-[11px] font-bold text-brand-cyan block mb-2">
+          2. Scan QR or Pay <strong id="selected-pack-label" class="text-brand-gold">₹10 (10 Coins)</strong> via UPI
+        </span>
+
+        <!-- Clean White QR Card Frame -->
+        <div class="w-40 h-40 mx-auto bg-white p-2.5 rounded-2xl shadow-lg flex items-center justify-center overflow-hidden">
+          <img
+            src="image_678f92.jpg"
+            alt="Admin UPI QR Code"
+            class="w-full h-full object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+          />
+          <!-- Fallback SVG QR Code if local image path isn't loaded -->
+          <svg class="hidden w-full h-full text-black" viewBox="0 0 100 100" fill="currentColor">
+            <rect x="5" y="5" width="28" height="28" fill="none" stroke="currentColor" stroke-width="6"/>
+            <rect x="13" y="13" width="12" height="12"/>
+            <rect x="67" y="5" width="28" height="28" fill="none" stroke="currentColor" stroke-width="6"/>
+    <!-- ==================== UPLOAD & SNAPCHAT-STYLE CREATIVE STUDIO MODAL ==================== -->
+    <div id="upload-modal" class="hidden absolute inset-0 z-50 bg-[#0b0b0f]/95 backdrop-blur-md flex flex-col p-4 overflow-y-auto no-scrollbar">
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="font-display font-bold text-base flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-brand-cyan"></span> JHALAK Creative Studio ✨
+        </h2>
+        <button onclick="closeUploadModal()" class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:text-white">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleVideoUpload(event)" class="space-y-3 flex-1 flex flex-col">
+        <!-- Live Video Preview Stage with Applied Filter & Sticker Overlay -->
+        <div class="relative w-full h-48 rounded-2xl overflow-hidden bg-black border border-white/15 flex items-center justify-center">
+          <video
+            id="studio-preview-video"
+            src="https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4"
+            class="w-full h-full object-cover filter-none transition-all duration-300"
+            loop
+            muted
+            autoplay
+            playsinline
+          ></video>
+
+          <!-- Live AR Sticker Overlay -->
+          <div id="studio-sticker-overlay" class="hidden pointer-events-none absolute top-3 right-3 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/25 text-xs font-display font-extrabold text-white shadow-lg">
+            🔥 Trending
+          </div>
+
+          <!-- Active Track Pill -->
+          <div id="studio-music-badge" class="pointer-events-none absolute bottom-2.5 left-2.5 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md text-[10px] font-semibold text-brand-cyan flex items-center gap-1.5">
+            <i class="fa-solid fa-music"></i>
+            <span id="studio-music-label">Original Video Audio</span>
+          </div>
+
+          <!-- Select Video File Overlay Trigger -->
+          <label class="absolute top-2.5 left-2.5 px-2.5 py-1.5 rounded-xl bg-white/90 hover:bg-white text-black font-bold text-[10px] cursor-pointer shadow flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-video"></i>
+            <span id="upload-file-label">Choose Video</span>
+            <input id="upload-video-file" type="file" accept="video/*" onchange="previewSelectedFile(this)" class="hidden" />
+          </label>
+        </div>
+
+        <!-- Snapchat-Style Color Filters Strip -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="text-[11px] font-bold text-gray-300 flex items-center gap-1.5">
+              <i class="fa-solid fa-wand-magic-sparkles text-brand-pink"></i> Snapchat-Style Filters
+            </label>
+            <span id="selected-filter-name" class="text-[10px] text-brand-cyan font-semibold">Normal</span>
+          </div>
+          <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1" id="studio-filters-strip">
+            <button type="button" onclick="applyStudioFilter('filter-none', 'Normal', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-cyan text-black font-bold text-[10px] shrink-0">Normal</button>
+            <button type="button" onclick="applyStudioFilter('filter-glow', 'Golden Glow ✨', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">Golden Glow ✨</button>
+            <button type="button" onclick="applyStudioFilter('filter-neon', 'Cyber Neon ⚡', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">Cyber Neon ⚡</button>
+            <button type="button" onclick="applyStudioFilter('filter-vintage', '90s Vintage 🎞️', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">90s Vintage 🎞️</button>
+            <button type="button" onclick="applyStudioFilter('filter-vivid', 'Vivid Pop 🌈', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">Vivid Pop 🌈</button>
+            <button type="button" onclick="applyStudioFilter('filter-dreamy', 'Dreamy Pink 🌸', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">Dreamy Pink 🌸</button>
+            <button type="button" onclick="applyStudioFilter('filter-noir', 'Noir B&W 🎬', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">Noir B&W 🎬</button>
+            <button type="button" onclick="applyStudioFilter('filter-mint', 'Cool Mint 🌿', this)" class="studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0">Cool Mint 🌿</button>
+          </div>
+        </div>
+
+        <!-- AR Sticker Overlay Strip -->
+        <div>
+          <label class="block text-[11px] font-bold text-gray-300 mb-1 flex items-center gap-1.5">
+            <i class="fa-solid fa-face-laugh-beam text-brand-gold"></i> AR Sticker Overlay
+          </label>
+          <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar">
+            <button type="button" onclick="applyStudioSticker('', this)" class="studio-sticker-btn px-2.5 py-1 rounded-lg bg-white text-black font-bold text-[10px] shrink-0">None</button>
+            <button type="button" onclick="applyStudioSticker('🔥 Viral Reel', this)" class="studio-sticker-btn px-2.5 py-1 rounded-lg bg-brand-card border border-white/15 text-white text-[10px] shrink-0">🔥 Viral Reel</button>
+            <button type="button" onclick="applyStudioSticker('🧠 Genius Trick', this)" class="studio-sticker-btn px-2.5 py-1 rounded-lg bg-brand-card border border-white/15 text-white text-[10px] shrink-0">🧠 Genius Trick</button>
+            <button type="button" onclick="applyStudioSticker('👑 JHALAK Star', this)" class="studio-sticker-btn px-2.5 py-1 rounded-lg bg-brand-card border border-white/15 text-white text-[10px] shrink-0">👑 JHALAK Star</button>
+            <button type="button" onclick="applyStudioSticker('🎶 Desi Vibes', this)" class="studio-sticker-btn px-2.5 py-1 rounded-lg bg-brand-card border border-white/15 text-white text-[10px] shrink-0">🎶 Desi Vibes</button>
+          </div>
+        </div>
+
+        <!-- Background Music & Song Library Picker -->
+        <div class="p-2.5 rounded-xl bg-brand-card border border-white/10 space-y-2">
+          <div class="flex items-center justify-between">
+            <label class="text-[11px] font-bold text-brand-cyan flex items-center gap-1.5">
+              <i class="fa-solid fa-headphones"></i> Add Music / Song Track
+            </label>
+            <label class="px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 text-[10px] font-semibold text-white cursor-pointer">
+              + Upload .MP3
+              <input type="file" accept="audio/*" onchange="handleCustomSongFile(this)" class="hidden" />
+            </label>
+          </div>
+          <div class="grid grid-cols-2 gap-1.5">
+            <button type="button" onclick="selectStudioMusic('Original Video Audio', 'none', this)" class="studio-music-btn p-1.5 rounded-lg bg-brand-cyan/20 border border-brand-cyan text-left text-[10px] font-bold text-white truncate">
+              🎤 Original Audio
+            </button>
+            <button type="button" onclick="selectStudioMusic('Desi Lo-Fi Chill Beats 🎧', 'lofi', this)" class="studio-music-btn p-1.5 rounded-lg bg-black/40 border border-white/10 text-left text-[10px] text-gray-200 truncate">
+              🎧 Desi Lo-Fi Beats
+            </button>
+            <button type="button" onclick="selectStudioMusic('Study Focus Synth ⚡', 'focus', this)" class="studio-music-btn p-1.5 rounded-lg bg-black/40 border border-white/10 text-left text-[10px] text-gray-200 truncate">
+              ⚡ Study Focus Synth
+            </button>
+            <button type="button" onclick="selectStudioMusic('Bollywood Acoustic Vibe 🎸', 'acoustic', this)" class="studio-music-btn p-1.5 rounded-lg bg-black/40 border border-white/10 text-left text-[10px] text-gray-200 truncate">
+              🎸 Bollywood Acoustic
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Selector -->
+        <div class="grid grid-cols-2 gap-2">
+          <label class="cursor-pointer">
+            <input type="radio" name="uploadCategory" value="edu" checked class="peer hidden" />
+            <div class="p-2 rounded-xl bg-brand-card border border-white/10 peer-checked:border-brand-gold peer-checked:bg-brand-gold/15 text-center transition">
+              <span class="text-xs font-bold text-white"><i class="fa-solid fa-graduation-cap text-brand-gold mr-1"></i>Edu & Talent</span>
+            </div>
+          </label>
+          <label class="cursor-pointer">
+            <input type="radio" name="uploadCategory" value="ent" class="peer hidden" />
+            <div class="p-2 rounded-xl bg-brand-card border border-white/10 peer-checked:border-brand-pink peer-checked:bg-brand-pink/15 text-center transition">
+              <span class="text-xs font-bold text-white"><i class="fa-solid fa-masks-theater text-brand-pink mr-1"></i>Fun</span>
+            </div>
+    <!-- ==================== ANDROID APP DRAWER / .APK INSTALL MODAL ==================== -->
+    <div id="install-guide-modal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
+      <div class="bg-[#161622] w-full max-w-sm rounded-3xl border border-brand-cyan/40 p-5 shadow-2xl">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-11 h-11 rounded-2xl bg-black border border-brand-gold/50 overflow-hidden shadow-lg">
+              <img src="image_685dcc.jpg" alt="JHALAK App Icon" class="w-full h-full object-cover" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');" />
+              <svg class="hidden w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" fill="#050508"/>
+                <polygon points="28,16 84,50 28,84" fill="#ff2a5f" stroke="#fbbf24" stroke-width="3"/>
+                <path d="M50 32 V56 C50 65 39 67 35 60" fill="none" stroke="#ffffff" stroke-width="8" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <h3 class="font-display font-extrabold text-sm text-white">Install JHALAK App</h3>
+              <span class="text-[10px] text-emerald-400 font-bold">Android App Drawer & .APK Ready</span>
+            </div>
+          </div>
+          <button onclick="document.getElementById('install-guide-modal').classList.add('hidden')" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+
+        <!-- Tab Switcher: Direct WebAPK vs Native .APK File -->
+        <div class="grid grid-cols-2 gap-1 p-1 rounded-xl bg-black/50 border border-white/10 mb-3">
+          <button type="button" id="install-tab-webapk" onclick="switchInstallTab('webapk')" class="py-1.5 rounded-lg bg-brand-cyan text-black font-display font-bold text-[11px] transition">
+            1-Tap WebAPK Install
+          </button>
+          <button type="button" id="install-tab-apk" onclick="switchInstallTab('apk')" class="py-1.5 rounded-lg text-gray-400 hover:text-white font-display font-bold text-[11px] transition">
+            Build .APK File
+          </button>
+        </div>
+
+        <!-- Panel 1: Android Chrome WebAPK (Installs directly into Phone App Drawer!) -->
+        <div id="install-panel-webapk" class="space-y-2.5 text-[11px] text-gray-200">
+          <p class="text-gray-300 leading-relaxed">
+            Android Chrome browser mein <strong class="text-white">"Install App"</strong> dabane par Google Chrome <strong class="text-brand-cyan">JHALAK</strong> ko compile karke seedha aapke phone ke <strong class="text-white">App Drawer (App Section)</strong> mein install kar deta hai!
+          </p>
+          <div class="p-3 rounded-2xl bg-black/45 border border-white/10 space-y-2">
+            <div><strong class="text-brand-cyan">1. Android (Chrome):</strong> Top-right <strong>⋮ (3 dots)</strong> dabayein → <strong>"Install app"</strong> par click karein (yeh App Section mein icon bana dega).</div>
+            <div><strong class="text-brand-pink">2. iPhone (Safari):</strong> Neeche <strong>Share (<i class="fa-solid fa-arrow-up-from-bracket"></i>)</strong> dabayein → <strong>"Add to Home Screen"</strong> chunein.</div>
+          </div>
+        </div>
+
+        <!-- Panel 2: Generate Real Android .APK Package -->
+        <div id="install-panel-apk" class="hidden space-y-2.5 text-[11px] text-gray-200">
+          <p class="text-gray-300 leading-relaxed">
+            Apne users ko share karne ke liye asli <strong class="text-emerald-400">JHALAK.apk</strong> file 3 aasan steps mein banayein:
+          </p>
+          <div class="p-3 rounded-2xl bg-black/45 border border-white/10 space-y-2">
+            <div><strong class="text-brand-gold">Step 1 (Live Link):</strong> Is HTML file ko <strong>Netlify Drop</strong> ya <strong>Vercel</strong> par upload karke free HTTPS link lein.</div>
+            <div><strong class="text-brand-cyan">Step 2 (Generate APK):</strong> <strong>pwabuilder.com</strong> par apna link daalein → <strong>Android → Generate Package</strong> par click karein.</div>
+            <div><strong class="text-emerald-400">Step 3 (Install):</strong> Download hui <strong>JHALAK.apk</strong> install karte hi yeh phone ke <strong>App Section</strong> mein aa jayegi!</div>
+          </div>
+          <button type="button" onclick="downloadWebManifestFile()" class="w-full py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/15 text-white font-bold text-[11px] flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-file-code text-brand-cyan"></i> Download manifest.json for APK Builder
+          </button>
+        </div>
+
+        <button onclick="document.getElementById('install-guide-modal').classList.add('hidden')" class="w-full mt-4 py-2.5 rounded-xl bg-gradient-to-r from-brand-cyan to-brand-purple text-white font-display font-extrabold text-xs shadow-lg">
+          Done 👍
+        </button>
+      </div>
+    </div>
+
+    <!-- ==================== TOAST NOTIFICATION ==================== -->
+    <div id="toast" class="hidden absolute top-16 left-1/2 -translate-x-1/2 z-50 px-4 py-2 rounded-full bg-white text-black font-semibold text-xs shadow-xl flex items-center gap-2 whitespace-nowrap">
+      <i class="fa-solid fa-circle-check text-emerald-600"></i>
+      <span id="toast-msg">Notification</span>
+    </div>
+
+  </div>
+
+  <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
+  <script>
+    // Reliable Royalty-Free Sample MP4 Clips
+    const SAMPLE_VIDEOS = [
+      {
+        id: 'v1',
+        category: 'edu',
+        badge: 'EduCreator',
+        badgeColor: 'bg-brand-gold text-black',
+        handle: '@science_with_ritesh',
+        avatarBg: 'from-amber-400 to-orange-600',
+        avatarText: 'SR',
+        caption: '60-Sec Science: Light Refraction Magic! Paani ke glass se arrow ki direction kaise badal gayi? 🔬✨ #ScienceMagic #Physics #EduCreator',
+        audio: 'Original Science Explained - Ritesh Sir',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-in-slow-motion-172-large.mp4',
+        likes: 14200,
+        giftsCount: 18,
+        liked: false,
+        saved: false,
+        following: false,
+        comments: [
+          { user: '@priya_student', text: 'Board exam mein refraction ka concept bilkul clear ho gaya! 🙏' },
+          { user: '@rohan_99', text: 'Best 1 minute science explanation!' }
+        ],
+        quiz: {
+          question: 'Paani ke glass ke peeche arrow ulta kyun dikhai deta hai?',
+          options: ['Reflection of Light', 'Refraction of Light', 'Diffraction'],
+          correctIndex: 1
+        }
+      },
+      {
+        id: 'v2',
+        category: 'edu',
+        badge: 'Rising Star',
+        badgeColor: 'bg-brand-cyan text-black',
+        handle: '@aarav_art',
+        avatarBg: 'from-cyan-400 to-blue-600',
+        avatarText: 'AA',
+        caption: 'Hyper-realistic Pencil Sketch Time-Lapse! Sirf 2 graphite pencils se banaya portrait 🎨✏️ #StudentTalent #Sketching #ArtIndia',
+        audio: 'Lo-Fi Study & Sketch Beats - Aarav',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-painter-drawing-on-a-canvas-42652-large.mp4',
+        likes: 28900,
+        giftsCount: 42,
+        liked: true,
+        saved: true,
+        following: true,
+        comments: [
+          { user: '@neha_arts', text: 'Shading kitni smooth hai bhai! Pure talent 🙌' },
+          { user: '@art_lover', text: 'Deserves 1 Million likes!' }
+        ],
+        quiz: null
+      },
+      {
+        id: 'v3',
+        category: 'ent',
+        badge: 'Fun Creator',
+        badgeColor: 'bg-brand-pink text-white',
+        handle: '@desi_vibes',
+        avatarBg: 'from-pink-500 to-rose-600',
+        avatarText: 'DV',
+        caption: 'Jab Sunday khatam hota hai aur Monday subah 7 baje alarm bajta hai 😂⏰ Tag your sleepy friend! #DesiComedy #Relatable #Fun',
+        audio: 'Funny Wake Up Remix - Desi Vibes',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-young-man-dancing-happily-in-the-street-43475-large.mp4',
+        likes: 53400,
+        giftsCount: 65,
+        liked: false,
+        saved: false,
+        following: false,
+        comments: [
+          { user: '@aman_k', text: 'Bhai bilkul meri haalat dikha di 😂😂' },
+          { user: '@simran_s', text: '5 minute aur sone do yaar!' }
+        ],
+        quiz: null
+      },
+      {
+        id: 'v4',
+        category: 'edu',
+        badge: 'EduCreator',
+        badgeColor: 'bg-brand-gold text-black',
+        handle: '@math_wizard',
+        avatarBg: 'from-emerald-400 to-teal-600',
+        avatarText: 'MW',
+        caption: 'Vedic Math Trick: Kisi bhi 2-digit number ko 11 se 2 second mein multiply karein! 🧠⚡ #VedicMaths #ExamTricks #SmartStudy',
+        audio: 'Fast Brain Focus Track - Math Wizard',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-student-writing-notes-in-a-notebook-4726-large.mp4',
+        likes: 19800,
+        giftsCount: 29,
+        liked: false,
+        saved: false,
+        following: false,
+        comments: [
+          { user: '@ankit_jee', text: 'Calculation speed double ho gayi is trick se!' }
+        ],
+        quiz: {
+          question: 'Vedic Math trick se 45 × 11 ka answer kya hoga?',
+          options: ['485', '495', '505'],
+          correctIndex: 1
+        }
+      },
+      {
+        id: 'v5',
+        category: 'edu',
+        badge: 'Talent Star',
+        badgeColor: 'bg-purple-400 text-black',
+        handle: '@ananya_music',
+        avatarBg: 'from-purple-500 to-indigo-600',
+        avatarText: 'AM',
+        caption: 'Evening Raga on Bansuri (Flute) 🎶🌿 Headphones lagakar sunein! #StudentTalent #IndianClassical #MusicCover',
+        audio: 'Peaceful Flute Melody - Ananya',
+        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-woman-playing-an-acoustic-guitar-in-a-park-42718-large.mp4',
+        likes: 34100,
+        giftsCount: 51,
+        liked: false,
+        saved: false,
+        following: false,
+        comments: [
+          { user: '@rahul_beats', text: 'So soothing! Dil khush ho gaya ✨' }
+        ],
+        quiz: null
+      }
+    ];
+
+    // App State
+    let videos = [...SAMPLE_VIDEOS];
+    let myUploads = [];
+    let currentCategory = 'all';
+    let isMuted = true;
+    let activeCommentVideoId = null;
+    let activeGiftVideoId = null;
+    let observer = null;
+
+    // Wallet & Authentication State
+    let currentUser = null; // null = Guest | { name, handle, initials, role: 'user' | 'admin' }
+    let userCoins = 15;
+    let creatorEarningsRs = 0;
+    let platformRevenueRs = 0;
+    let selectedPackRupees = 10;
+    let selectedPackCoins = 10;
+
+    // Pending UPI Top-up Requests for Admin Verification
+    let upiRequests = [
+      {
+        id: 'req-101',
+        sender: 'Ananya Verma',
+        utr: '431982746109',
+        rupees: 20,
+        coins: 20,
+        status: 'pending',
+        time: '2 mins ago'
+      }
+    ];
+
+    // Personal Chat & Call Threads State
+    let activeChatHandle = null;
+    let activeCallType = null; // 'audio' | 'video'
+    let callTimerInterval = null;
+    let callSecondsElapsed = 0;
+    let isCallMuted = false;
+    let isCallCamOff = false;
+    let isCallSpeakerOn = true;
+    let localMediaStream = null;
+
+    // Snapchat-Style Studio & PWA Install State
+    let selectedStudioFilter = 'filter-none';
+    let selectedStudioSticker = '';
+    let selectedStudioMusicTitle = 'Original Video Audio';
+    let selectedStudioMusicPreset = 'none';
+    let customStudioAudioUrl = null;
+    let deferredInstallPrompt = null;
+
+    let chatThreads = [
+      {
+        handle: '@science_with_ritesh',
+        name: 'Ritesh Sir (EduCreator)',
+        avatarBg: 'from-amber-400 to-orange-600',
+        avatarText: 'SR',
+        online: true,
+        unread: 1,
+        videoSample: 'https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-in-slow-motion-172-large.mp4',
+        messages: [
+          { from: 'peer', text: 'Namaste! Science ya Physics ke kisi topic par 1-on-1 doubt ho toh message ya call kar sakte hain 🔬', time: '10:02 AM' }
+        ]
+      },
+      {
+        handle: '@aarav_art',
+        name: 'Aarav Sketch Studio',
+        avatarBg: 'from-cyan-400 to-blue-600',
+        avatarText: 'AA',
+        online: true,
+        unread: 0,
+        videoSample: 'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-painter-drawing-on-a-canvas-42652-large.mp4',
+        messages: [
+          { from: 'peer', text: 'Thanks for supporting my portrait sketch reel! 🎨✨', time: 'Yesterday' }
+        ]
+      },
+      {
+        handle: '@ananya_music',
+        name: 'Ananya Flute & Vocals',
+        avatarBg: 'from-purple-500 to-indigo-600',
+        avatarText: 'AM',
+        online: true,
+        unread: 0,
+        videoSample: 'https://assets.mixkit.co/videos/preview/mixkit-woman-playing-an-acoustic-guitar-in-a-park-42718-large.mp4',
+        messages: [
+          { from: 'peer', text: 'Live music jam ya collab ke liye audio/video call par connect karein 🎶', time: 'Yesterday' }
+        ]
+      }
+    ];
+
+    function isAdminUser() {
+      return currentUser && currentUser.role === 'admin';
+    }
+
+    // Format large numbers cleanly (e.g., 14200 -> 14.2K)
+    function formatCount(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    // Sync Coin Balance, User Role Badges & Earnings across all UI elements
+    function syncWalletUI() {
+      const adminActive = isAdminUser();
+      const displayBalance = adminActive ? '∞ UNLIMITED' : userCoins;
+
+      // Toggle Header Login Button vs Wallet Coin Pill
+      const headerLoginBtn = document.getElementById('header-login-btn');
+      const headerCoinPill = document.getElementById('header-coin-pill');
+      const headerCoin = document.getElementById('header-coin-balance');
+
+      if (headerLoginBtn && headerCoinPill) {
+        if (currentUser) {
+          headerLoginBtn.classList.add('hidden');
+          headerCoinPill.classList.remove('hidden');
+          headerCoinPill.classList.add('flex');
+          if (headerCoin) headerCoin.textContent = adminActive ? '∞' : userCoins;
+        } else {
+          headerLoginBtn.classList.remove('hidden');
+          headerCoinPill.classList.add('hidden');
+          headerCoinPill.classList.remove('flex');
+        }
+      }
+
+      document.querySelectorAll('.sync-coin-balance').forEach(el => {
+        el.textContent = displayBalance;
+      });
+
+      const giftSuffix = document.getElementById('gift-balance-suffix');
+      if (giftSuffix) giftSuffix.textContent = adminActive ? '(Unlimited Access)' : 'Coins';
+
+      // Update Gift Modal prices when Admin is logged in
+      document.querySelectorAll('.gift-price-tag').forEach(tag => {
+        if (adminActive) {
+          tag.textContent = 'FREE (0 Coins)';
+          tag.classList.add('text-emerald-400');
+        } else {
+          tag.textContent = tag.dataset.default;
+          tag.classList.remove('text-emerald-400');
+        }
+      });
+
+      // Toggle Guest vs Authenticated Profile View
+      const guestView = document.getElementById('profile-guest-view');
+      const authView = document.getElementById('profile-authenticated-view');
+      if (guestView && authView) {
+        guestView.classList.toggle('hidden', !!currentUser);
+        authView.classList.toggle('hidden', !currentUser);
+      }
+
+      if (currentUser) {
+        const initialsEl = document.getElementById('profile-avatar-initials');
+        const nameEl = document.getElementById('profile-display-name');
+        const handleEl = document.getElementById('profile-display-handle');
+        const roleBadge = document.getElementById('profile-role-badge');
+        const studioLabel = document.getElementById('profile-account-type-label');
+
+        if (initialsEl) initialsEl.textContent = currentUser.initials;
+        if (nameEl) nameEl.textContent = currentUser.name;
+        if (handleEl) handleEl.textContent = `${currentUser.handle} • Fun • Learn • Shine ✨`;
+
+        if (roleBadge) {
+          roleBadge.textContent = adminActive ? 'Verified Admin 👑' : 'Creator';
+          roleBadge.className = adminActive
+            ? 'absolute -bottom-1 right-0 px-2 py-0.5 rounded-full bg-gradient-to-r from-brand-gold to-brand-pink text-black text-[10px] font-extrabold shadow'
+            : 'absolute -bottom-1 right-0 px-2 py-0.5 rounded-full bg-brand-gold text-black text-[10px] font-extrabold shadow';
+        }
+
+        if (studioLabel) {
+          studioLabel.textContent = adminActive ? 'Admin Studio • God Mode' : 'Creator Studio';
+        }
+      }
+
+      // Show Admin Control Panel & Spotlight Upload ONLY when Admin is logged in
+      const adminSection = document.getElementById('admin-exclusive-section');
+      const uploadSpotlightBox = document.getElementById('admin-upload-spotlight-box');
+      if (adminSection) adminSection.classList.toggle('hidden', !adminActive);
+      if (uploadSpotlightBox) uploadSpotlightBox.classList.toggle('hidden', !adminActive);
+
+      const creatorEl = document.getElementById('creator-earnings-display');
+      const platformEl = document.getElementById('platform-revenue-display');
+      if (creatorEl) creatorEl.textContent = `₹${creatorEarningsRs.toFixed(2)}`;
+      if (platformEl) platformEl.textContent = `₹${platformRevenueRs.toFixed(2)}`;
+
+      const callRateBadge = document.getElementById('call-rate-badge');
+      if (callRateBadge) {
+        callRateBadge.textContent = adminActive
+          ? 'Admin Mode: Unlimited FREE Calls ∞'
+          : 'Audio 5🪙/m • Video 10🪙/m';
+      }
+    }
+
+    function handleAuthLogin(e) {
+      e.preventDefault();
+      const rawId = document.getElementById('login-identifier').value.trim();
+      const rawPass = document.getElementById('login-password').value.trim();
+      if (!rawId || !rawPass) return;
+
+      const normalizedId = rawId.toLowerCase().replace(/^@/, '');
+      const normalizedPass = rawPass.toUpperCase();
+
+      // Silent Role Detection: Check for Admin Credentials
+      const isValidAdminId = ['admin', 'ritesh', '300113890'].includes(normalizedId);
+      const isValidAdminPass = ['3001', 'JHALAKADMIN'].includes(normalizedPass);
+
+      if (isValidAdminId && isValidAdminPass) {
+        currentUser = {
+          name: 'JHALAK Admin',
+          handle: '@jhalak_admin',
+          initials: 'ADM',
+          role: 'admin'
+        };
+        closeAuthModal();
+        e.target.reset();
+        syncWalletUI();
+        renderAdminRequests();
+        renderAdminModerationList();
+        showToast('Welcome Admin! Unlimited God-Mode Active 👑');
+      } else {
+        // Authenticate as Standard User
+        const cleanHandle = '@' + normalizedId.replace(/[^a-z0-9_]/g, '').slice(0, 16) || '@jhalak_user';
+        const displayName = rawId.includes('@') && !rawId.startsWith('@')
+          ? rawId.split('@')[0]
+          : rawId.replace(/^@/, '');
+        const formattedName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+
+        currentUser = {
+          name: formattedName,
+          handle: cleanHandle,
+          initials: formattedName.slice(0, 2).toUpperCase(),
+          role: 'user'
+        };
+        closeAuthModal();
+        e.target.reset();
+        syncWalletUI();
+        showToast(`Welcome back, ${formattedName}! ✨`);
+      }
+    }
+
+    function handleAuthSignup(e) {
+      e.preventDefault();
+      const fullName = document.getElementById('signup-name').value.trim();
+      const rawUser = document.getElementById('signup-username').value.trim();
+      if (!fullName || !rawUser) return;
+
+      const cleanHandle = '@' + rawUser.toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 16);
+      userCoins = 15; // Welcome bonus for new user
+
+      currentUser = {
+        name: fullName,
+        handle: cleanHandle,
+        initials: fullName.slice(0, 2).toUpperCase(),
+        role: 'user'
+      };
+
+      closeAuthModal();
+      e.target.reset();
+      syncWalletUI();
+      showToast(`Account created! +15 Welcome Coins added 🎉`);
+    }
+
+    function logoutUser() {
+      currentUser = null;
+      syncWalletUI();
+      showToast('Logged out successfully.');
+    }
+
+    // Admin Feed Moderation & Demo Reset
+    function renderAdminModerationList() {
+      const modList = document.getElementById('admin-feed-moderation-list');
+      if (!modList) return;
+
+      modList.innerHTML = videos.map(v => `
+        <div class="flex items-center justify-between p-2 rounded-xl bg-black/40 border border-white/10 text-xs">
+          <div class="truncate pr-2">
+            <span class="font-bold text-white">${v.handle}</span>
+            <p class="text-[10px] text-gray-400 truncate">${v.caption}</p>
+          </div>
+          <button onclick="adminDeleteVideo('${v.id}')" title="Remove Video" class="px-2 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/35 text-rose-300 text-[10px] font-bold shrink-0 transition">
+            <i class="fa-solid fa-trash"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    function adminDeleteVideo(videoId) {
+      if (videos.length <= 1) {
+        showToast('Kam se kam 1 video feed mein rehna zaroori hai!');
+        return;
+      }
+      videos = videos.filter(v => v.id !== videoId);
+      myUploads = myUploads.filter(v => v.id !== videoId);
+      renderFeed();
+      renderAdminModerationList();
+      renderProfileView();
+      showToast('Video removed by Admin Moderation 🛡️');
+    }
+
+    function resetDemoData() {
+      videos = JSON.parse(JSON.stringify(SAMPLE_VIDEOS));
+      myUploads = [];
+      userCoins = 15;
+      creatorEarningsRs = 0;
+      platformRevenueRs = 0;
+      syncWalletUI();
+      renderFeed();
+      renderAdminModerationList();
+      renderProfileView();
+      showToast('Demo Feed & Wallet Reset to Default 🔄');
+    }
+
+    // Show Toast Notification
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toast-msg');
+      toastMsg.textContent = message;
+      toast.classList.remove('hidden');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2600);
+    }
+
+    // Render Main Vertical Video Feed
+    function renderFeed() {
+      const feedContainer = document.getElementById('video-feed');
+      const filteredVideos = currentCategory === 'all'
+        ? videos
+        : videos.filter(v => v.category === currentCategory);
+
+      feedContainer.innerHTML = '';
+
+      filteredVideos.forEach((video) => {
+        const slide = document.createElement('div');
+        slide.className = `video-slide relative w-full h-full flex items-center justify-center overflow-hidden ${video.category === 'edu' ? 'animated-bg-edu' : 'animated-bg-ent'}`;
+        slide.dataset.videoId = video.id;
+
+        slide.innerHTML = `
+          <!-- HTML5 Video Player with Fallback & Applied Filter -->
+          <video
+            class="reel-video w-full h-full object-cover ${video.filterClass || 'filter-none'}"
+            src="${video.videoUrl}"
+            onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden');"
+            loop
+            playsinline
+            ${isMuted ? 'muted' : ''}
+            preload="metadata"
+          ></video>
+
+          ${video.stickerText ? `
+            <div class="pointer-events-none absolute top-16 left-4 z-20 px-3 py-1 rounded-full bg-black/55 backdrop-blur-md border border-white/25 text-xs font-display font-extrabold text-white shadow-lg">
+              ${video.stickerText}
+            </div>
+          ` : ''}
+
+          <!-- Graceful Visual Fallback if Offline / Stream Blocked -->
+          <div class="hidden absolute inset-0 flex flex-col items-center justify-center p-8 text-center pointer-events-none">
+            <div class="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 animate-pulse">
+              <i class="fa-solid ${video.category === 'edu' ? 'fa-atom text-brand-gold' : 'fa-sparkles text-brand-cyan'} text-4xl"></i>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-white/10 text-[11px] font-bold uppercase tracking-wider text-white/80 mb-2">JHALAK Stream Preview</span>
+            <p class="text-sm font-display font-bold text-white/90 max-w-xs">${video.caption}</p>
+          </div>
+
+          <!-- Tap Layer (Single Tap = Play/Pause, Double Tap = Like Burst) -->
+          <div class="tap-overlay absolute inset-0 z-10 cursor-pointer" onclick="handleVideoTap(event, '${video.id}')"></div>
+
+          <!-- Center Play/Pause Indicator -->
+          <div id="play-indicator-${video.id}" class="hidden pointer-events-none absolute z-20 w-16 h-16 rounded-full bg-black/50 backdrop-blur-sm flex items-center justify-center text-white text-2xl">
+            <i class="fa-solid fa-play ml-1"></i>
+          </div>
+
+          <!-- Double-Tap Heart Animation Container -->
+          <div id="heart-burst-${video.id}" class="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-brand-pink text-7xl opacity-0">
+            <i class="fa-solid fa-heart drop-shadow-[0_0_20px_rgba(255,42,95,0.8)]"></i>
+          </div>
+
+          <!-- Floating Gift Celebration Overlay Container -->
+          <div id="gift-celebration-${video.id}" class="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center overflow-hidden"></div>
+
+          <!-- Right-Side Vertical Action Bar -->
+          <div class="absolute right-3 bottom-20 z-20 flex flex-col items-center gap-3.5">
+            <!-- Creator Avatar + Follow -->
+            <div class="relative mb-0.5">
+              <div class="w-11 h-11 rounded-full bg-gradient-to-tr ${video.avatarBg} p-0.5 shadow-lg">
+                <div class="w-full h-full rounded-full bg-brand-dark flex items-center justify-center font-display font-bold text-xs text-white">
+                  ${video.avatarText}
+                </div>
+              </div>
+              <button onclick="toggleFollow('${video.id}')" class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full ${video.following ? 'bg-emerald-500' : 'bg-brand-pink'} text-white text-[10px] flex items-center justify-center shadow border border-brand-dark transition">
+                <i class="fa-solid ${video.following ? 'fa-check' : 'fa-plus'}"></i>
+              </button>
+            </div>
+
+            <!-- Like Button -->
+            <button onclick="toggleLike('${video.id}')" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-active:scale-125 transition">
+                <i class="fa-solid fa-heart text-xl ${video.liked ? 'text-brand-pink' : 'text-white'}"></i>
+              </div>
+              <span class="text-[11px] font-semibold drop-shadow">${formatCount(video.likes)}</span>
+            </button>
+
+            <!-- Virtual Gift Button -->
+            <button onclick="openGiftModal('${video.id}')" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-amber-500/30 to-pink-500/30 backdrop-blur-sm border border-brand-gold/60 flex items-center justify-center group-active:scale-125 transition shadow-md">
+                <i class="fa-solid fa-gift text-lg text-brand-gold"></i>
+              </div>
+              <span class="text-[11px] font-bold text-brand-gold drop-shadow">${video.giftsCount}</span>
+            </button>
+
+            <!-- Comment Button -->
+            <button onclick="openComments('${video.id}')" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-active:scale-110 transition">
+                <i class="fa-solid fa-comment-dots text-xl text-white"></i>
+              </div>
+              <span class="text-[11px] font-semibold drop-shadow">${video.comments.length}</span>
+            </button>
+
+            <!-- Bookmark / Save Button -->
+            <button onclick="toggleSave('${video.id}')" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-active:scale-110 transition">
+                <i class="fa-solid fa-bookmark text-lg ${video.saved ? 'text-brand-cyan' : 'text-white'}"></i>
+              </div>
+              <span class="text-[11px] font-semibold drop-shadow">${video.saved ? 'Saved' : 'Save'}</span>
+            </button>
+
+            <!-- Share Button -->
+            <button onclick="shareVideo('${video.handle}')" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-active:scale-110 transition">
+                <i class="fa-solid fa-share text-lg text-white"></i>
+              </div>
+              <span class="text-[11px] font-semibold drop-shadow">Share</span>
+            </button>
+
+            <!-- Direct Message / Call Creator Button -->
+            <button onclick="openDirectChatWithCreator('${video.handle}', '${video.avatarText}', '${video.avatarBg}', '${video.videoUrl}')" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-10 h-10 rounded-full bg-brand-cyan/20 backdrop-blur-sm border border-brand-cyan/50 flex items-center justify-center group-active:scale-110 transition">
+                <i class="fa-solid fa-paper-plane text-base text-brand-cyan"></i>
+              </div>
+              <span class="text-[10px] font-bold text-brand-cyan drop-shadow">Chat</span>
+            </button>
+
+            <!-- Spinning Audio Disc -->
+            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-900 via-gray-700 to-gray-900 border-2 border-white/20 flex items-center justify-center animate-spin-slow">
+              <i class="fa-solid fa-music text-[9px] text-brand-cyan"></i>
+            </div>
+          </div>
+
+          <!-- Bottom-Left Creator Info, Caption & Edu Quiz Pill -->
+          <div class="absolute bottom-0 left-0 right-0 z-20 pt-14 pb-20 pl-4 pr-16 gradient-bottom pointer-events-none">
+            <div class="pointer-events-auto">
+              <!-- Interactive Quiz Pill for Educational Videos -->
+              ${video.quiz ? `
+                <button onclick="openQuiz('${video.id}')" class="mb-2 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-gold/95 text-black font-bold text-[11px] shadow-lg hover:scale-105 transition">
+                  <i class="fa-solid fa-brain"></i> Take Quick Quiz
+                </button>
+              ` : ''}
+
+              <!-- Handle + Category Badge -->
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="font-display font-bold text-sm text-white drop-shadow">${video.handle}</span>
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide ${video.badgeColor}">
+                  ${video.badge}
+                </span>
+              </div>
+
+              <!-- Video Caption -->
+              <p class="text-xs text-gray-100 leading-relaxed line-clamp-2 drop-shadow mb-2">
+                ${video.caption}
+              </p>
+
+              <!-- Scrolling Audio Ticker -->
+              <div class="flex items-center gap-2 text-white/85 text-[11px] overflow-hidden max-w-[230px]">
+                <i class="fa-solid fa-music text-brand-cyan shrink-0"></i>
+                <div class="overflow-hidden w-full">
+                  <span class="animate-marquee">${video.audio} &nbsp;&nbsp;•&nbsp;&nbsp; JHALAK Original</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        feedContainer.appendChild(slide);
+      });
+
+      setupIntersectionObserver();
+    }
+
+    // Auto-play visible video & pause off-screen videos
+    function setupIntersectionObserver() {
+      if (observer) observer.disconnect();
+
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const videoEl = entry.target.querySelector('video');
+          if (!videoEl) return;
+
+          if (entry.isIntersecting) {
+            videoEl.muted = isMuted;
+            videoEl.play().catch(() => {
+              videoEl.muted = true;
+              videoEl.play().catch(() => {});
+            });
+          } else {
+            videoEl.pause();
+            videoEl.currentTime = 0;
+          }
+        });
+      }, { threshold: 0.65 });
+
+      document.querySelectorAll('.video-slide').forEach(slide => observer.observe(slide));
+    }
+
+    // Handle Single Tap (Play/Pause) vs Double Tap (Heart Burst Like)
+    let lastTapTime = 0;
+    function handleVideoTap(event, videoId) {
+      const now = Date.now();
+      const timeDiff = now - lastTapTime;
+      lastTapTime = now;
+
+      if (timeDiff < 280) {
+        const vid = videos.find(v => v.id === videoId);
+        if (vid && !vid.liked) {
+          toggleLike(videoId);
+        }
+        const burst = document.getElementById(`heart-burst-${videoId}`);
+        if (burst) {
+          burst.classList.remove('heart-burst');
+          void burst.offsetWidth;
+          burst.classList.add('heart-burst');
+        }
+      } else {
+        const slide = document.querySelector(`.video-slide[data-video-id="${videoId}"]`);
+        const videoEl = slide?.querySelector('video');
+        const indicator = document.getElementById(`play-indicator-${videoId}`);
+        if (!videoEl) return;
+
+        if (videoEl.paused) {
+          videoEl.play().catch(() => {});
+          indicator?.classList.add('hidden');
+        } else {
+          videoEl.pause();
+          indicator?.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Switch Top Feed Tabs
+    function setFeedCategory(category) {
+      currentCategory = category;
+      document.querySelectorAll('.feed-tab').forEach(tab => {
+        const indicator = tab.querySelector('.tab-indicator');
+        if (tab.dataset.tab === category) {
+          tab.classList.remove('text-white/65', 'font-medium');
+          tab.classList.add('text-white', 'font-bold');
+          indicator.classList.remove('hidden');
+        } else {
+          tab.classList.add('text-white/65', 'font-medium');
+          tab.classList.remove('text-white', 'font-bold');
+          indicator.classList.add('hidden');
+        }
+      });
+      renderFeed();
+    }
+
+    // Toggle Global Audio Mute/Unmute
+    function toggleGlobalMute() {
+      isMuted = !isMuted;
+      const icon = document.getElementById('global-mute-icon');
+      if (isMuted) {
+        icon.className = 'fa-solid fa-volume-xmark text-[11px] text-brand-pink';
+        showToast('Sound Muted');
+      } else {
+        icon.className = 'fa-solid fa-volume-high text-[11px] text-brand-cyan';
+        showToast('Sound On 🔊');
+      }
+      document.querySelectorAll('.reel-video').forEach(v => {
+        v.muted = isMuted;
+      });
+    }
+
+    // Like / Unlike Video
+    function toggleLike(videoId) {
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid) return;
+      vid.liked = !vid.liked;
+      vid.likes += vid.liked ? 1 : -1;
+      renderFeed();
+    }
+
+    // Follow / Unfollow Creator
+    function toggleFollow(videoId) {
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid) return;
+      vid.following = !vid.following;
+      showToast(vid.following ? `Following ${vid.handle}` : `Unfollowed ${vid.handle}`);
+      renderFeed();
+    }
+
+    // Bookmark / Save Video
+    function toggleSave(videoId) {
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid) return;
+      vid.saved = !vid.saved;
+      showToast(vid.saved ? 'Saved to Collection 🔖' : 'Removed from Saved');
+      renderFeed();
+      renderSavedView();
+    }
+
+    // Share Video Link
+    function shareVideo(handle) {
+      showToast(`JHALAK link copied for ${handle}! 🔗`);
+    }
+
+    // ==================== VIRTUAL GIFTING LOGIC ====================
+    function openGiftModal(videoId) {
+      if (!currentUser) {
+        showToast('Gift bhejne ke liye pehle Login karein ✨');
+        openAuthModal('login');
+        return;
+      }
+      activeGiftVideoId = videoId;
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid) return;
+      document.getElementById('gift-target-handle').textContent = vid.handle;
+      syncWalletUI();
+      document.getElementById('gift-modal').classList.remove('hidden');
+    }
+
+    function closeGiftModal() {
+      document.getElementById('gift-modal').classList.add('hidden');
+    }
+
+    function sendGift(emoji, giftName, costCoins) {
+      const adminActive = isAdminUser();
+
+      if (!adminActive && userCoins < costCoins) {
+        showToast(`Insufficient Coins! Need ${costCoins} Coins.`);
+        closeGiftModal();
+        openBuyCoinsModal();
+        return;
+      }
+
+      const targetVideoId = activeGiftVideoId;
+      const vid = videos.find(v => v.id === targetVideoId);
+      if (!vid) return;
+
+      // Deduct coins only for standard users; Admin sends unlimited free gifts
+      if (!adminActive) {
+        userCoins -= costCoins;
+      }
+
+      const creatorShare = +(costCoins * 0.70).toFixed(2);
+      const platformShare = +(costCoins * 0.30).toFixed(2);
+      creatorEarningsRs = +(creatorEarningsRs + creatorShare).toFixed(2);
+      platformRevenueRs = +(platformRevenueRs + platformShare).toFixed(2);
+
+      vid.giftsCount += 1;
+      syncWalletUI();
+      closeGiftModal();
+      renderFeed();
+
+      // Trigger full-screen floating emoji celebration on the active slide
+      setTimeout(() => {
+        const container = document.getElementById(`gift-celebration-${targetVideoId}`);
+        if (container) {
+          const badgeText = adminActive
+            ? `ADMIN GIFT: ${giftName} (FREE ∞)`
+            : `Sent ${giftName} (+₹${creatorShare} to Creator!)`;
+
+          container.innerHTML = `
+            <div class="gift-celebrate flex flex-col items-center">
+              <span class="text-7xl drop-shadow-[0_0_25px_rgba(251,191,36,0.9)]">${emoji}</span>
+              <span class="mt-2 px-3 py-1 rounded-full bg-black/75 border border-brand-gold text-brand-gold font-display font-extrabold text-xs shadow-lg">
+                ${badgeText}
+              </span>
+            </div>
+          `;
+        }
+      }, 60);
+
+      showToast(adminActive ? `Sent FREE ${emoji} ${giftName}!` : `Sent ${emoji} ${giftName} to ${vid.handle}!`);
+    }
+
+    // ==================== BUY COINS & ADMIN UPI MODAL LOGIC ====================
+    function openBuyCoinsModal() {
+      if (!currentUser) {
+        showToast('Coins kharidne ke liye pehle Login karein 🪙');
+        openAuthModal('login');
+        return;
+      }
+      document.getElementById('buy-coins-modal').classList.remove('hidden');
+    }
+
+    function closeBuyCoinsModal() {
+      document.getElementById('buy-coins-modal').classList.add('hidden');
+    }
+
+    function selectCoinPack(rupees, coins, btnEl) {
+      selectedPackRupees = rupees;
+      selectedPackCoins = coins;
+
+      document.querySelectorAll('.coin-pack-btn').forEach(btn => {
+        btn.classList.remove('bg-brand-gold/20', 'border-2', 'border-brand-gold');
+        btn.classList.add('bg-brand-card', 'border', 'border-white/15');
+      });
+
+      btnEl.classList.remove('bg-brand-card', 'border', 'border-white/15');
+      btnEl.classList.add('bg-brand-gold/20', 'border-2', 'border-brand-gold');
+
+      document.getElementById('selected-pack-label').textContent = `₹${rupees} (${coins} Coins)`;
+    }
+
+    function copyUpiNumber() {
+      const upiNumber = '300113890';
+      const tempInput = document.createElement('input');
+      tempInput.value = upiNumber;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+      showToast('Admin UPI No. 300113890 Copied! 📋');
+    }
+
+    function submitCoinPurchase(e) {
+      e.preventDefault();
+      const utr = document.getElementById('upi-utr-input').value.trim();
+      const sender = document.getElementById('upi-sender-input').value.trim();
+      if (!utr || !sender) return;
+
+      const newRequest = {
+        id: 'req-' + Date.now(),
+        sender: sender,
+        utr: utr,
+        rupees: selectedPackRupees,
+        coins: selectedPackCoins,
+        status: 'pending',
+        time: 'Just now'
+      };
+
+      upiRequests.unshift(newRequest);
+      e.target.reset();
+      closeBuyCoinsModal();
+      renderAdminRequests();
+      showToast('Payment submitted! Verify in Profile -> Admin Panel ✅');
+    }
+
+    // ==================== ADMIN PANEL (UPI VERIFICATIONS) ====================
+    function toggleAdminPanel() {
+      const body = document.getElementById('admin-panel-body');
+      const chevron = document.getElementById('admin-chevron');
+      body.classList.toggle('hidden');
+      chevron.classList.toggle('rotate-180');
+    }
+
+    function renderAdminRequests() {
+      const list = document.getElementById('admin-requests-list');
+      const pendingCount = upiRequests.filter(r => r.status === 'pending').length;
+
+      const badge = document.getElementById('pending-badge-count');
+      const navDot = document.getElementById('nav-admin-dot');
+      if (badge) badge.textContent = `${pendingCount} Pending`;
+      if (navDot) navDot.classList.toggle('hidden', !isAdminUser() || pendingCount === 0);
+
+      if (upiRequests.length === 0) {
+        list.innerHTML = `<p class="text-xs text-gray-400 text-center py-3">No UPI requests yet.</p>`;
+        return;
+      }
+
+      list.innerHTML = upiRequests.map(req => `
+        <div class="p-3 rounded-xl bg-black/40 border ${req.status === 'pending' ? 'border-brand-gold/40' : 'border-white/10'} flex items-center justify-between gap-2">
+          <div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-xs text-white">${req.sender}</span>
+              <span class="text-[10px] text-gray-400">• ${req.time}</span>
+            </div>
+            <div class="text-[11px] text-brand-gold font-semibold mt-0.5">
+              Paid ₹${req.rupees} → <span class="text-white">${req.coins} Coins</span>
+            </div>
+            <div class="text-[10px] text-gray-400 font-mono mt-0.5">UTR: ${req.utr}</div>
+          </div>
+
+          <div class="shrink-0">
+            ${req.status === 'pending' ? `
+              <div class="flex flex-col gap-1.5">
+                <button onclick="approveUpiRequest('${req.id}')" class="px-2.5 py-1 rounded-lg bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-[11px] transition">
+                  Approve
+                </button>
+                <button onclick="rejectUpiRequest('${req.id}')" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 text-rose-300 font-bold text-[10px] transition">
+                  Reject
+                </button>
+              </div>
+            ` : req.status === 'approved' ? `
+              <span class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 text-[10px] font-bold">
+                Approved ✓
+              </span>
+            ` : `
+              <span class="px-2.5 py-1 rounded-lg bg-rose-500/20 text-rose-300 text-[10px] font-bold">
+                Rejected ✕
+              </span>
+            `}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function approveUpiRequest(reqId) {
+      const req = upiRequests.find(r => r.id === reqId);
+      if (!req || req.status !== 'pending') return;
+
+      req.status = 'approved';
+      userCoins += req.coins;
+      syncWalletUI();
+      renderAdminRequests();
+      showToast(`Approved! +${req.coins} Coins added to Wallet 🎉`);
+    }
+
+    function rejectUpiRequest(reqId) {
+      const req = upiRequests.find(r => r.id === reqId);
+      if (!req || req.status !== 'pending') return;
+
+      req.status = 'rejected';
+      renderAdminRequests();
+      showToast('UPI Request Rejected.');
+    }
+
+    // ==================== COMMENTS DRAWER LOGIC ====================
+    function openComments(videoId) {
+      activeCommentVideoId = videoId;
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid) return;
+
+      document.getElementById('comments-header-count').textContent = `${vid.comments.length} Comments`;
+      const list = document.getElementById('comments-list');
+      list.innerHTML = vid.comments.map(c => `
+        <div class="flex items-start gap-2.5">
+          <div class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-[10px] font-bold shrink-0">
+            ${c.user.slice(1, 3).toUpperCase()}
+          </div>
+          <div>
+            <div class="text-[11px] font-semibold text-gray-400">${c.user}</div>
+            <p class="text-xs text-white mt-0.5">${c.text}</p>
+          </div>
+        </div>
+      `).join('');
+
+      document.getElementById('comments-modal').classList.remove('hidden');
+    }
+
+    function closeComments() {
+      document.getElementById('comments-modal').classList.add('hidden');
+      activeCommentVideoId = null;
+    }
+
+    function submitComment(e) {
+      e.preventDefault();
+      const input = document.getElementById('comment-input');
+      const text = input.value.trim();
+      if (!text || !activeCommentVideoId) return;
+
+      const vid = videos.find(v => v.id === activeCommentVideoId);
+      if (vid) {
+        const commenterHandle = currentUser ? currentUser.handle : '@guest_viewer';
+        vid.comments.push({ user: commenterHandle, text });
+        input.value = '';
+        openComments(activeCommentVideoId);
+        renderFeed();
+      }
+    }
+
+    // ==================== INTERACTIVE EDU QUIZ POPUP ====================
+    function openQuiz(videoId) {
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid || !vid.quiz) return;
+
+      document.getElementById('quiz-question').textContent = vid.quiz.question;
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.classList.add('hidden');
+
+      const optionsDiv = document.getElementById('quiz-options');
+      optionsDiv.innerHTML = vid.quiz.options.map((opt, idx) => `
+        <button onclick="checkQuizAnswer(${idx}, ${vid.quiz.correctIndex})" class="w-full text-left p-3 rounded-xl bg-white/5 hover:bg-white/15 border border-white/10 text-xs font-medium text-white transition">
+          ${opt}
+        </button>
+      `).join('');
+
+      document.getElementById('quiz-modal').classList.remove('hidden');
+    }
+
+    function checkQuizAnswer(selected, correct) {
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.classList.remove('hidden');
+      if (selected === correct) {
+        feedback.className = 'mt-3 p-2.5 rounded-xl text-xs font-bold text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        feedback.textContent = '🎉 Sahi Jawab! +10 Genius Points!';
+      } else {
+        feedback.className = 'mt-3 p-2.5 rounded-xl text-xs font-bold text-center bg-rose-500/20 text-rose-300 border border-rose-500/30';
+        feedback.textContent = 'Oops! Phir se try karein ya video dhyan se dekhein.';
+      }
+    }
+
+    function closeQuiz() {
+      document.getElementById('quiz-modal').classList.add('hidden');
+    }
+
+    // ==================== BOTTOM NAVIGATION SWITCHER ====================
+    function switchNav(viewName) {
+      const views = ['home', 'discover', 'messages', 'saved', 'profile'];
+      views.forEach(v => {
+        document.getElementById(`view-${v}`).classList.toggle('hidden', v !== viewName);
+      });
+
+      document.getElementById('top-header').classList.toggle('hidden', viewName !== 'home');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.nav === viewName) {
+          btn.classList.remove('text-gray-500');
+          btn.classList.add('text-white');
+        } else {
+          btn.classList.add('text-gray-500');
+          btn.classList.remove('text-white');
+        }
+      });
+
+      if (viewName !== 'home') {
+        document.querySelectorAll('.reel-video').forEach(v => v.pause());
+      } else {
+        setupIntersectionObserver();
+      }
+
+      if (viewName === 'discover') renderLeaderboard();
+      if (viewName === 'messages') renderMessagesView();
+      if (viewName === 'saved') renderSavedView();
+      if (viewName === 'profile') {
+        syncWalletUI();
+        renderAdminRequests();
+        renderAdminModerationList();
+        renderProfileView();
+      }
+    }
+
+    // ==================== PERSONAL CHAT, AUDIO & VIDEO CALL LOGIC ====================
+    function renderMessagesView() {
+      syncWalletUI();
+      const onlineStrip = document.getElementById('online-creators-strip');
+      const threadsList = document.getElementById('chat-threads-list');
+
+      onlineStrip.innerHTML = chatThreads.map(t => `
+        <button onclick="openChatConversation('${t.handle}')" class="flex flex-col items-center gap-1 shrink-0 group">
+          <div class="relative">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr ${t.avatarBg} p-0.5 group-hover:scale-105 transition">
+              <div class="w-full h-full rounded-full bg-brand-dark flex items-center justify-center font-display font-bold text-xs text-white">
+                ${t.avatarText}
+              </div>
+            </div>
+            <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-brand-dark"></span>
+          </div>
+          <span class="text-[10px] text-gray-300 font-medium max-w-[64px] truncate">${t.handle}</span>
+        </button>
+      `).join('');
+
+      threadsList.innerHTML = chatThreads.map(t => {
+        const lastMsg = t.messages[t.messages.length - 1];
+        return `
+          <div onclick="openChatConversation('${t.handle}')" class="p-3 rounded-2xl bg-brand-card hover:bg-white/10 border ${t.unread > 0 ? 'border-brand-cyan/40' : 'border-white/10'} flex items-center justify-between gap-3 cursor-pointer transition">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="relative shrink-0">
+                <div class="w-11 h-11 rounded-full bg-gradient-to-tr ${t.avatarBg} flex items-center justify-center font-display font-bold text-xs text-white">
+                  ${t.avatarText}
+                </div>
+                <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-400 border-2 border-brand-card"></span>
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-display font-bold text-xs text-white truncate">${t.handle}</span>
+                  ${t.unread > 0 ? `<span class="px-1.5 py-0.2 rounded-full bg-brand-pink text-[9px] font-extrabold text-white">${t.unread}</span>` : ''}
+                </div>
+                <p class="text-[11px] text-gray-400 truncate mt-0.5">${lastMsg ? lastMsg.text : 'Say hello!'}</p>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button onclick="event.stopPropagation(); openChatConversation('${t.handle}'); startCall('audio');" class="w-8 h-8 rounded-full bg-brand-cyan/15 text-brand-cyan flex items-center justify-center hover:bg-brand-cyan/30 transition">
+                <i class="fa-solid fa-phone text-[11px]"></i>
+              </button>
+              <button onclick="event.stopPropagation(); openChatConversation('${t.handle}'); startCall('video');" class="w-8 h-8 rounded-full bg-brand-pink/15 text-brand-pink flex items-center justify-center hover:bg-brand-pink/30 transition">
+                <i class="fa-solid fa-video text-[11px]"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openDirectChatWithCreator(handle, avatarText, avatarBg, videoSample) {
+      if (!currentUser) {
+        showToast('Personal Chat aur Call ke liye pehle Login karein 💬');
+        openAuthModal('login');
+        return;
+      }
+
+      let thread = chatThreads.find(t => t.handle === handle);
+      if (!thread) {
+        thread = {
+          handle: handle,
+          name: handle,
+          avatarBg: avatarBg || 'from-purple-500 to-pink-500',
+          avatarText: avatarText || handle.slice(1, 3).toUpperCase(),
+          online: true,
+          unread: 0,
+          videoSample: videoSample || 'https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4',
+          messages: [
+            { from: 'peer', text: `Hi! Main ${handle} hoon. Aap mujhe yahan direct message ya audio/video call kar sakte hain ✨`, time: 'Just now' }
+          ]
+        };
+        chatThreads.unshift(thread);
+      }
+      openChatConversation(handle);
+    }
+
+    function openChatConversation(handle) {
+      if (!currentUser) {
+        showToast('Chat kholne ke liye pehle Login karein 💬');
+        openAuthModal('login');
+        return;
+      }
+
+      const thread = chatThreads.find(t => t.handle === handle);
+      if (!thread) return;
+
+      activeChatHandle = handle;
+      thread.unread = 0;
+
+      // Update unread badge dot on bottom nav
+      const hasUnread = chatThreads.some(t => t.unread > 0);
+      document.getElementById('nav-unread-dot')?.classList.toggle('hidden', !hasUnread);
+
+      document.getElementById('chat-peer-name').textContent = thread.handle;
+      const avatarEl = document.getElementById('chat-peer-avatar');
+      avatarEl.className = `w-9 h-9 rounded-full bg-gradient-to-tr ${thread.avatarBg} flex items-center justify-center font-display font-bold text-xs text-white`;
+      avatarEl.textContent = thread.avatarText;
+
+      renderChatMessages();
+      document.getElementById('chat-conversation-modal').classList.remove('hidden');
+    }
+
+    function closeChatConversation() {
+      document.getElementById('chat-conversation-modal').classList.add('hidden');
+      activeChatHandle = null;
+      renderMessagesView();
+    }
+
+    function renderChatMessages() {
+      const thread = chatThreads.find(t => t.handle === activeChatHandle);
+      const container = document.getElementById('chat-messages-container');
+      if (!thread || !container) return;
+
+      container.innerHTML = thread.messages.map(m => {
+        const isMe = m.from === 'me';
+        return `
+          <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
+            <div class="max-w-[78%] px-3.5 py-2.5 rounded-2xl text-xs leading-relaxed ${
+              isMe
+                ? 'bg-gradient-to-r from-brand-pink to-brand-purple text-white rounded-br-sm'
+                : 'bg-brand-card border border-white/10 text-gray-100 rounded-bl-sm'
+            }">
+              ${m.text}
+            </div>
+            <span class="text-[9px] text-gray-500 mt-1 px-1">${m.time}</span>
+          </div>
+        `;
+      }).join('');
+
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function sendChatMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-message-input');
+      const text = input.value.trim();
+      if (!text || !activeChatHandle) return;
+
+      pushChatText(text);
+      input.value = '';
+    }
+
+    function sendQuickChatSticker(text) {
+      if (!activeChatHandle) return;
+      pushChatText(text);
+    }
+
+    function pushChatText(text) {
+      const thread = chatThreads.find(t => t.handle === activeChatHandle);
+      if (!thread) return;
+
+      const nowStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      thread.messages.push({ from: 'me', text, time: nowStr });
+      renderChatMessages();
+
+      // Simulated Friendly Creator Auto-Reply
+      const replyTargetHandle = activeChatHandle;
+      setTimeout(() => {
+        const targetThread = chatThreads.find(t => t.handle === replyTargetHandle);
+        if (!targetThread) return;
+        const replies = [
+          'Shukriya message ke liye! Aapka video/idea bahut pasand aaya 🙌',
+          'Zaroor! Agar detail mein baat karni ho toh upar Audio ya Video Call icon dabayein 📞',
+          'Awesome! JHALAK par aise hi seekhte aur shine karte rahiye ✨'
+        ];
+        const randomReply = replies[Math.floor(Math.random() * replies.length)];
+        targetThread.messages.push({
+          from: 'peer',
+          text: randomReply,
+          time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        });
+        if (activeChatHandle === replyTargetHandle) {
+          renderChatMessages();
+        }
+      }, 1100);
+    }
+
+    // ==================== AUDIO & VIDEO CALL CONTROLS ====================
+    function startCall(type) {
+      if (!currentUser) {
+        showToast('Audio/Video Call ke liye pehle Login karein 📞');
+        openAuthModal('login');
+        return;
+      }
+
+      const thread = chatThreads.find(t => t.handle === activeChatHandle);
+      if (!thread) return;
+
+      const adminActive = isAdminUser();
+      const ratePerMin = type === 'video' ? 10 : 5;
+
+      if (!adminActive && userCoins < ratePerMin) {
+        showToast(`Call ke liye kam se kam ${ratePerMin} Coins chahiye!`);
+        openBuyCoinsModal();
+        return;
+      }
+
+      activeCallType = type;
+      callSecondsElapsed = 0;
+      isCallMuted = false;
+      isCallCamOff = false;
+      isCallSpeakerOn = true;
+
+      document.getElementById('call-mode-badge').textContent =
+        type === 'video' ? 'JHALAK Live Video Call' : 'JHALAK HD Audio Call';
+      document.getElementById('call-peer-initials').textContent = thread.avatarText;
+      document.getElementById('call-peer-handle').textContent = thread.handle;
+      document.getElementById('call-status-timer').textContent = 'Ringing...';
+      document.getElementById('call-billing-pill').textContent = adminActive
+        ? 'ADMIN VIP CALL • FREE (0 Coins/min) ∞'
+        : `${ratePerMin} Coins / min (70% to Creator)`;
+
+      const videoStage = document.getElementById('video-call-stage');
+      const camBtn = document.getElementById('call-cam-btn');
+      const remoteVideo = document.getElementById('remote-call-video');
+
+      if (type === 'video') {
+        videoStage.classList.remove('hidden');
+        camBtn.classList.remove('hidden');
+        remoteVideo.src = thread.videoSample;
+        remoteVideo.play().catch(() => {});
+
+        // Try accessing local webcam for realistic PiP preview (graceful fallback if blocked)
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+          navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+            .then(stream => {
+              localMediaStream = stream;
+              const localVid = document.getElementById('local-webcam-video');
+              localVid.srcObject = stream;
+              localVid.classList.remove('hidden');
+              document.getElementById('local-pip-fallback').classList.add('hidden');
+            })
+            .catch(() => {});
+        }
+      } else {
+        videoStage.classList.add('hidden');
+        camBtn.classList.add('hidden');
+      }
+
+      document.getElementById('active-call-modal').classList.remove('hidden');
+
+      // Charge first minute for normal users on connect
+      if (!adminActive) {
+        userCoins -= ratePerMin;
+        creatorEarningsRs = +(creatorEarningsRs + ratePerMin * 0.70).toFixed(2);
+        platformRevenueRs = +(platformRevenueRs + ratePerMin * 0.30).toFixed(2);
+        syncWalletUI();
+      }
+
+      clearInterval(callTimerInterval);
+      callTimerInterval = setInterval(() => {
+        callSecondsElapsed += 1;
+        const mins = String(Math.floor(callSecondsElapsed / 60)).padStart(2, '0');
+        const secs = String(callSecondsElapsed % 60).padStart(2, '0');
+        document.getElementById('call-status-timer').textContent = `Connected • ${mins}:${secs}`;
+
+        // Per-minute billing for normal users
+        if (!adminActive && callSecondsElapsed > 0 && callSecondsElapsed % 60 === 0) {
+          if (userCoins >= ratePerMin) {
+            userCoins -= ratePerMin;
+            creatorEarningsRs = +(creatorEarningsRs + ratePerMin * 0.70).toFixed(2);
+            platformRevenueRs = +(platformRevenueRs + ratePerMin * 0.30).toFixed(2);
+            syncWalletUI();
+          } else {
+            showToast('Coin balance khatam hone par call disconnect hui.');
+            endActiveCall();
+          }
+        }
+      }, 1000);
+    }
+
+    function toggleCallMute() {
+      isCallMuted = !isCallMuted;
+      const icon = document.getElementById('call-mute-icon');
+      icon.className = isCallMuted
+        ? 'fa-solid fa-microphone-slash text-base text-rose-400'
+        : 'fa-solid fa-microphone text-base text-white';
+      showToast(isCallMuted ? 'Mic Muted' : 'Mic Unmuted');
+    }
+
+    function toggleCallCamera() {
+      isCallCamOff = !isCallCamOff;
+      const icon = document.getElementById('call-cam-icon');
+      const localVid = document.getElementById('local-webcam-video');
+      const fallback = document.getElementById('local-pip-fallback');
+
+      icon.className = isCallCamOff
+        ? 'fa-solid fa-video-slash text-base text-rose-400'
+        : 'fa-solid fa-video text-base text-white';
+
+      if (localMediaStream) {
+        localVid.classList.toggle('hidden', isCallCamOff);
+        fallback.classList.toggle('hidden', !isCallCamOff);
+      }
+      showToast(isCallCamOff ? 'Camera Off' : 'Camera On');
+    }
+
+    function toggleCallSpeaker() {
+      isCallSpeakerOn = !isCallSpeakerOn;
+      const icon = document.getElementById('call-speaker-icon');
+      icon.className = isCallSpeakerOn
+        ? 'fa-solid fa-volume-high text-base text-brand-cyan'
+        : 'fa-solid fa-volume-low text-base text-gray-400';
+      showToast(isCallSpeakerOn ? 'Speaker On' : 'Earpiece Mode');
+    }
+
+    function endActiveCall() {
+      clearInterval(callTimerInterval);
+      if (localMediaStream) {
+        localMediaStream.getTracks().forEach(track => track.stop());
+        localMediaStream = null;
+      }
+      const remoteVideo = document.getElementById('remote-call-video');
+      if (remoteVideo) remoteVideo.pause();
+
+      document.getElementById('active-call-modal').classList.add('hidden');
+      showToast(`Call Ended (${Math.floor(callSecondsElapsed / 60)}m ${callSecondsElapsed % 60}s)`);
+    }
+
+    // ==================== UNIFIED AUTH MODAL CONTROLS ====================
+    function openAuthModal(defaultTab = 'login') {
+      switchAuthTab(defaultTab);
+      document.getElementById('auth-modal').classList.remove('hidden');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('auth-modal').classList.add('hidden');
+    }
+
+    function switchAuthTab(tabName) {
+      const loginForm = document.getElementById('login-form');
+      const signupForm = document.getElementById('signup-form');
+      const tabLogin = document.getElementById('auth-tab-login');
+      const tabSignup = document.getElementById('auth-tab-signup');
+
+      if (tabName === 'login') {
+        loginForm.classList.remove('hidden');
+        signupForm.classList.add('hidden');
+        tabLogin.className = 'py-2 rounded-lg bg-white text-black font-display font-bold text-xs transition';
+        tabSignup.className = 'py-2 rounded-lg text-gray-400 hover:text-white font-display font-bold text-xs transition';
+      } else {
+        loginForm.classList.add('hidden');
+        signupForm.classList.remove('hidden');
+        tabSignup.className = 'py-2 rounded-lg bg-white text-black font-display font-bold text-xs transition';
+        tabLogin.className = 'py-2 rounded-lg text-gray-400 hover:text-white font-display font-bold text-xs transition';
+      }
+    }
+
+    function jumpToCategory(cat) {
+      switchNav('home');
+      setFeedCategory(cat);
+    }
+
+    // Discover Leaderboard Renderer
+    function renderLeaderboard(filterText = '') {
+      const list = document.getElementById('leaderboard-list');
+      const filtered = videos.filter(v =>
+        v.handle.toLowerCase().includes(filterText.toLowerCase()) ||
+        v.caption.toLowerCase().includes(filterText.toLowerCase())
+      );
+
+      list.innerHTML = filtered.map((v, index) => `
+        <div onclick="jumpToCategory('${v.category}')" class="flex items-center justify-between p-3 rounded-2xl bg-brand-card border border-white/10 hover:border-white/25 cursor-pointer transition">
+          <div class="flex items-center gap-3">
+            <span class="font-display font-extrabold text-xs text-gray-500 w-4">#${index + 1}</span>
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr ${v.avatarBg} flex items-center justify-center font-bold text-xs text-white">
+              ${v.avatarText}
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-white">${v.handle}</span>
+                <span class="px-1.5 py-0.5 rounded text-[9px] font-bold ${v.badgeColor}">${v.badge}</span>
+              </div>
+              <p class="text-[11px] text-gray-400 line-clamp-1 max-w-[175px]">${v.caption}</p>
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-xs font-bold text-brand-pink">${formatCount(v.likes)} ♥</div>
+            <div class="text-[10px] font-semibold text-brand-gold">${v.giftsCount} 🎁</div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterDiscover(val) {
+      renderLeaderboard(val);
+    }
+
+    // Saved View Renderer
+    function renderSavedView() {
+      const savedVideos = videos.filter(v => v.saved);
+      document.getElementById('saved-count-badge').textContent = `${savedVideos.length} Saved`;
+      const grid = document.getElementById('saved-grid');
+
+      if (savedVideos.length === 0) {
+        grid.innerHTML = `<div class="col-span-2 text-center py-12 text-xs text-gray-400">Abhi tak koi video save nahi kiya hai. Feed mein Bookmark icon dabayein!</div>`;
+        return;
+      }
+
+      grid.innerHTML = savedVideos.map(v => `
+        <div onclick="jumpToCategory('${v.category}')" class="relative aspect-[9/14] rounded-2xl overflow-hidden bg-brand-card border border-white/10 cursor-pointer group">
+          <video src="${v.videoUrl}" class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition" muted></video>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-2.5 flex flex-col justify-end">
+            <span class="text-[10px] font-bold text-brand-gold">${v.handle}</span>
+            <p class="text-[11px] text-white line-clamp-2 leading-tight mt-0.5">${v.caption}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Profile Uploads Renderer
+    function renderProfileView() {
+      const grid = document.getElementById('my-uploads-grid');
+      if (myUploads.length === 0) {
+        grid.innerHTML = `<div class="col-span-2 text-center py-8 rounded-2xl bg-brand-card/50 border border-dashed border-white/15 text-xs text-gray-400">Aapne abhi tak koi video upload nahi kiya. Neeche "+" button se apna pehla JHALAK Reel banayein!</div>`;
+        return;
+      }
+
+      grid.innerHTML = myUploads.map(v => `
+        <div onclick="switchNav('home')" class="relative aspect-[9/14] rounded-2xl overflow-hidden bg-brand-card border border-white/10 cursor-pointer">
+          <video src="${v.videoUrl}" class="w-full h-full object-cover" muted></video>
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-2.5 flex flex-col justify-end">
+            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold w-fit ${v.badgeColor}">${v.badge}</span>
+            <p class="text-[11px] text-white line-clamp-2 mt-1">${v.caption}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Upload Modal Controls
+    function openUploadModal() {
+      if (!currentUser) {
+        showToast('Reel upload karne ke liye pehle Login karein 🎬');
+        openAuthModal('login');
+        return;
+      }
+      document.getElementById('upload-audio').value = `Original Audio - ${currentUser.handle}`;
+      document.getElementById('upload-modal').classList.remove('hidden');
+    }
+
+    function closeUploadModal() {
+      document.getElementById('upload-modal').classList.add('hidden');
+    }
+
+    function previewSelectedFile(input) {
+      const label = document.getElementById('upload-file-label');
+      const previewVid = document.getElementById('studio-preview-video');
+      if (input.files && input.files[0]) {
+        label.textContent = input.files[0].name.slice(0, 16) + '...';
+        if (previewVid) {
+          previewVid.src = URL.createObjectURL(input.files[0]);
+          previewVid.play().catch(() => {});
+        }
+      }
+    }
+
+    function applyStudioFilter(filterClass, filterName, btnEl) {
+      selectedStudioFilter = filterClass;
+      const previewVid = document.getElementById('studio-preview-video');
+      if (previewVid) {
+        previewVid.className = `w-full h-full object-cover transition-all duration-300 ${filterClass}`;
+      }
+      document.getElementById('selected-filter-name').textContent = filterName;
+
+      document.querySelectorAll('.studio-filter-btn').forEach(btn => {
+        btn.className = 'studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-card border border-white/15 text-white font-semibold text-[10px] shrink-0';
+      });
+      if (btnEl) {
+        btnEl.className = 'studio-filter-btn px-2.5 py-1.5 rounded-xl bg-brand-cyan text-black font-bold text-[10px] shrink-0';
+      }
+    }
+
+    function applyStudioSticker(stickerText, btnEl) {
+      selectedStudioSticker = stickerText;
+      const overlay = document.getElementById('studio-sticker-overlay');
+      if (overlay) {
+        if (stickerText) {
+          overlay.textContent = stickerText;
+          overlay.classList.remove('hidden');
+        } else {
+          overlay.classList.add('hidden');
+        }
+      }
+
+      document.querySelectorAll('.studio-sticker-btn').forEach(btn => {
+        btn.className = 'studio-sticker-btn px-2.5 py-1 rounded-lg bg-brand-card border border-white/15 text-white text-[10px] shrink-0';
+      });
+      if (btnEl) {
+        btnEl.className = 'studio-sticker-btn px-2.5 py-1 rounded-lg bg-white text-black font-bold text-[10px] shrink-0';
+      }
+    }
+
+    function playStudioSynthPreview(preset) {
+      if (preset === 'none') return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const notes = preset === 'lofi' ? [261.6, 329.6, 392.0, 493.9]
+          : preset === 'focus' ? [349.2, 440.0, 523.3, 659.3]
+          : [293.7, 369.9, 440.0, 587.3];
+
+        notes.forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = preset === 'focus' ? 'triangle' : 'sine';
+          osc.frequency.setValueAtTime(freq, ctx.currentTime + i * 0.14);
+          gain.gain.setValueAtTime(0.08, ctx.currentTime + i * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + i * 0.14 + 0.35);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(ctx.currentTime + i * 0.14);
+          osc.stop(ctx.currentTime + i * 0.14 + 0.36);
+        });
+      } catch (err) {}
+    }
+
+    function selectStudioMusic(trackTitle, preset, btnEl) {
+      selectedStudioMusicTitle = trackTitle;
+      selectedStudioMusicPreset = preset;
+      customStudioAudioUrl = null;
+      document.getElementById('studio-music-label').textContent = trackTitle;
+
+      document.querySelectorAll('.studio-music-btn').forEach(btn => {
+        btn.className = 'studio-music-btn p-1.5 rounded-lg bg-black/40 border border-white/10 text-left text-[10px] text-gray-200 truncate';
+      });
+      if (btnEl) {
+        btnEl.className = 'studio-music-btn p-1.5 rounded-lg bg-brand-cyan/20 border border-brand-cyan text-left text-[10px] font-bold text-white truncate';
+      }
+      playStudioSynthPreview(preset);
+    }
+
+    function handleCustomSongFile(input) {
+      if (input.files && input.files[0]) {
+        const songName = input.files[0].name.replace(/\.[^/.]+$/, '');
+        customStudioAudioUrl = URL.createObjectURL(input.files[0]);
+        selectedStudioMusicTitle = `🎵 ${songName}`;
+        document.getElementById('studio-music-label').textContent = selectedStudioMusicTitle;
+        showToast(`Added Song: ${songName} 🎶`);
+      }
+    }
+
+    function handleVideoUpload(e) {
+      e.preventDefault();
+      const fileInput = document.getElementById('upload-video-file');
+      const category = document.querySelector('input[name="uploadCategory"]:checked').value;
+      const caption = document.getElementById('upload-caption').value.trim();
+      const creatorHandle = currentUser ? currentUser.handle : '@jhalak_star';
+      const audio = selectedStudioMusicTitle === 'Original Video Audio'
+        ? `Original Audio - ${creatorHandle}`
+        : selectedStudioMusicTitle;
+
+      const quizQuestion = document.getElementById('upload-quiz-q').value.trim();
+      const quizCorrect = document.getElementById('upload-quiz-correct').value.trim();
+      const quizWrong = document.getElementById('upload-quiz-wrong').value.trim();
+
+      let quizData = null;
+      if (quizQuestion && quizCorrect) {
+        quizData = {
+          question: quizQuestion,
+          options: [quizCorrect, quizWrong || 'None of the above'],
+          correctIndex: 0
+        };
+      }
+
+      let videoUrl = 'https://assets.mixkit.co/videos/preview/mixkit-stars-in-space-1610-large.mp4';
+      if (fileInput.files && fileInput.files[0]) {
+        videoUrl = URL.createObjectURL(fileInput.files[0]);
+      }
+      const adminActive = isAdminUser();
+      const isSpotlight = adminActive && document.getElementById('upload-spotlight-check')?.checked;
+      const badgeLabel = isSpotlight
+        ? 'Verified Spotlight 👑'
+        : (category === 'edu' ? 'Edu & Talent' : 'Fun Creator');
+      const badgeStyle = isSpotlight
+        ? 'bg-gradient-to-r from-brand-gold via-amber-400 to-brand-pink text-black'
+        : (category === 'edu' ? 'bg-brand-gold text-black' : 'bg-brand-pink text-white');
+
+      const newReel = {
+        id: 'user-' + Date.now(),
+        category: category,
+        badge: badgeLabel,
+        badgeColor: badgeStyle,
+        handle: creatorHandle,
+        avatarBg: 'from-purple-500 via-pink-500 to-cyan-400',
+        avatarText: currentUser ? currentUser.initials : 'YOU',
+        caption: caption,
+        audio: audio,
+        videoUrl: videoUrl,
+        filterClass: selectedStudioFilter,
+        stickerText: selectedStudioSticker,
+        likes: isSpotlight ? 100 : 1,
+        giftsCount: 0,
+        liked: true,
+        saved: false,
+        following: true,
+        comments: [
+          { user: '@jhalak_official', text: isSpotlight ? 'Verified Spotlight Reel! ✨👑' : 'Zabardast upload! Welcome to JHALAK ✨' }
+        ],
+        quiz: quizData
+      };
+
+      videos.unshift(newReel);
+      myUploads.unshift(newReel);
+
+      e.target.reset();
+      selectedStudioFilter = 'filter-none';
+      selectedStudioSticker = '';
+      selectedStudioMusicTitle = 'Original Video Audio';
+      document.getElementById('upload-file-label').textContent = 'Choose Video';
+      document.getElementById('studio-sticker-overlay').classList.add('hidden');
+      document.getElementById('studio-music-label').textContent = 'Original Video Audio';
+      closeUploadModal();
+      switchNav('home');
+      setFeedCategory('all');
+      showToast(isSpotlight ? 'Published with Verified Spotlight 👑' : 'Published with Filters & Music! ✨');
+    }
+
+    // ==================== PWA INSTALLABLE APP ENGINE ====================
+    function setupInstallablePWA() {
+      const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#ff2a5f"/><stop offset="100%" stop-color="#7928ca"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="#050508"/><rect x="75" y="110" width="160" height="180" rx="20" transform="rotate(-14 75 110)" fill="#1f2937" stroke="#ffffff" stroke-width="10"/><polygon points="150,90 430,256 150,422" fill="url(#g)" stroke="#fbbf24" stroke-width="12" stroke-linejoin="round"/><path d="M256 170 V290 C256 335 200 345 180 310" fill="none" stroke="#ffffff" stroke-width="38" stroke-linecap="round"/><polygon points="290,220 350,256 290,292" fill="#ffffff"/></svg>`;
+      const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
+
+      const manifestObj = {
+        id: 'com.jhalak.app',
+        name: 'JHALAK — Fun • Learn • Shine',
+        short_name: 'JHALAK',
+        description: 'Short Video Entertainment, Student Talent & Educational Reels App',
+        start_url: './',
+        scope: './',
+        display: 'standalone',
+        display_override: ['standalone', 'fullscreen'],
+        background_color: '#0b0b0f',
+        theme_color: '#0b0b0f',
+        orientation: 'portrait',
+        categories: ['entertainment', 'education', 'social'],
+        icons: [
+          { src: iconUrl, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
+          { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'maskable' }
+        ]
+      };
+
+      window._jhalakManifestJson = JSON.stringify(manifestObj, null, 2);
+
+      const manifestBlob = new Blob([window._jhalakManifestJson], { type: 'application/manifest+json' });
+      const manifestLink = document.getElementById('pwa-manifest-link');
+      if (manifestLink) manifestLink.href = URL.createObjectURL(manifestBlob);
+
+      // Register Service Worker with offline shell caching for full Android WebAPK support
+      if ('serviceWorker' in navigator) {
+        const swCode = `
+          const CACHE_NAME = 'jhalak-app-v1';
+          self.addEventListener('install', (event) => {
+            self.skipWaiting();
+          });
+          self.addEventListener('activate', (event) => {
+            event.waitUntil(clients.claim());
+          });
+          self.addEventListener('fetch', (event) => {
+            event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+          });
+        `;
+        const swBlob = new Blob([swCode], { type: 'application/javascript' });
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+      }
+
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredInstallPrompt = e;
+      });
+    }
+
+    function switchInstallTab(tab) {
+      const webPanel = document.getElementById('install-panel-webapk');
+      const apkPanel = document.getElementById('install-panel-apk');
+      const webBtn = document.getElementById('install-tab-webapk');
+      const apkBtn = document.getElementById('install-tab-apk');
+
+      if (tab === 'webapk') {
+        webPanel.classList.remove('hidden');
+        apkPanel.classList.add('hidden');
+        webBtn.className = 'py-1.5 rounded-lg bg-brand-cyan text-black font-display font-bold text-[11px] transition';
+        apkBtn.className = 'py-1.5 rounded-lg text-gray-400 hover:text-white font-display font-bold text-[11px] transition';
+      } else {
+        webPanel.classList.add('hidden');
+        apkPanel.classList.remove('hidden');
+        apkBtn.className = 'py-1.5 rounded-lg bg-emerald-400 text-black font-display font-bold text-[11px] transition';
+        webBtn.className = 'py-1.5 rounded-lg text-gray-400 hover:text-white font-display font-bold text-[11px] transition';
+      }
+    }
+
+    function downloadWebManifestFile() {
+      const blob = new Blob([window._jhalakManifestJson || '{}'], { type: 'application/manifest+json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'manifest.json';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('manifest.json downloaded for APK Builder! 📦');
+    }
+
+    async function triggerAppInstall() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        const { outcome } = await deferredInstallPrompt.userChoice;
+        if (outcome === 'accepted') {
+          showToast('JHALAK installing into your Phone App Section! 📲✨');
+        }
+        deferredInstallPrompt = null;
+      } else {
+        document.getElementById('install-guide-modal').classList.remove('hidden');
+      }
+    }
+
+    // Initialize App on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      setupInstallablePWA();
+      syncWalletUI();
+      renderFeed();
+      renderLeaderboard();
+      renderAdminRequests();
+    });
+  </script>
+</body>
+</html>
