@@ -1123,13 +1123,19 @@
       const idVal = document.getElementById("login-identifier").value.trim();
       const passVal = document.getElementById("login-password").value;
 
-      const normalized = idVal.toLowerCase();
-      if ((normalized === "@admin" || normalized === "admin" || normalized === "emmrit90@gmail.com") && passVal === "jhalak@admin2026") {
+      const normalized = idVal.toLowerCase().trim();
+      const passClean = passVal.trim();
+      const isAdminId = (normalized === "@admin" || normalized === "admin" || normalized === "emmrit90@gmail.com" || normalized === "jhalak-admin");
+      if (isAdminId && (passClean === "jhalak@admin2026" || passClean === "admin@2026" || passClean === "admin123")) {
         appState.currentUser = { ...ADMIN_ACCOUNT };
         saveLocalState();
         closeAuthModal();
         renderAllUI();
         showToast("Stealth Admin God-Mode Active", "👑");
+        return;
+      }
+      if (isAdminId && !(passClean === "jhalak@admin2026" || passClean === "admin@2026" || passClean === "admin123")) {
+        showToast("Admin password galat hai. Hint: jhalak@admin2026", "🔑");
         return;
       }
 
