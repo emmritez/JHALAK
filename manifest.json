@@ -1,0 +1,27 @@
+{
+  "id": "/SHIKSHA/",
+  "name": "SHIKSHA Coaching Institute",
+  "short_name": "SHIKSHA",
+  "description": "Official Website, Student ERP, AI Assessments & Parent Portal - SHIKSHA Coaching Institute, Jhansi",
+  "start_url": "/SHIKSHA/index.html",
+  "scope": "/SHIKSHA/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "categories": ["education", "productivity"],
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
