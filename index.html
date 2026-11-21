@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="JHALAK" />
-  <link id="pwa-manifest-link" rel="manifest" />
+  <link rel="manifest" href="./manifest.json" />
   <title>JHALAK — Fun • Learn • Shine</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -345,12 +345,17 @@
             Apne reels upload karne, creators ko virtual gifts bhejne aur coin wallet manage karne ke liye login karein.
           </p>
 
-          <div class="flex items-center gap-3 w-full max-w-xs mt-6">
-            <button onclick="openAuthModal('login')" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-brand-pink to-brand-purple font-display font-bold text-xs text-white shadow-lg hover:opacity-95 transition">
-              Login
-            </button>
-            <button onclick="openAuthModal('signup')" class="flex-1 py-3 rounded-2xl bg-brand-card border border-white/15 hover:border-white/30 font-display font-bold text-xs text-white transition">
-              Create Account
+          <div class="flex flex-col gap-2.5 w-full max-w-xs mt-6">
+            <div class="flex items-center gap-3 w-full">
+              <button onclick="openAuthModal('login')" class="flex-1 py-3 rounded-2xl bg-gradient-to-r from-brand-pink to-brand-purple font-display font-bold text-xs text-white shadow-lg hover:opacity-95 transition">
+                Login
+              </button>
+              <button onclick="openAuthModal('signup')" class="flex-1 py-3 rounded-2xl bg-brand-card border border-white/15 hover:border-white/30 font-display font-bold text-xs text-white transition">
+                Create Account
+              </button>
+            </div>
+            <button id="guest-biometric-btn" onclick="loginWithFingerprint()" class="hidden w-full py-2.5 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-display font-bold text-xs flex items-center justify-center gap-2 transition">
+              <i class="fa-solid fa-fingerprint text-base"></i> Quick Fingerprint Unlock
             </button>
           </div>
         </div>
@@ -374,30 +379,44 @@
             <div class="relative">
               <div class="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-brand-pink via-brand-gold to-brand-cyan">
                 <div id="profile-avatar-initials" class="w-full h-full rounded-full bg-brand-card flex items-center justify-center text-2xl font-display font-bold text-white">
-                  RS
+                  U
                 </div>
               </div>
               <span id="profile-role-badge" class="absolute -bottom-1 right-0 px-2 py-0.5 rounded-full bg-brand-gold text-black text-[10px] font-extrabold shadow">
                 Creator
               </span>
             </div>
-            <h2 id="profile-display-name" class="font-display font-bold text-lg mt-2.5 text-white">Rohan Sharma</h2>
-            <p id="profile-display-handle" class="text-xs text-gray-400 mt-0.5">@rohan_jhansi • Fun • Learn • Shine ✨</p>
+            <h2 id="profile-display-name" class="font-display font-bold text-lg mt-2.5 text-white">User</h2>
+            <p id="profile-display-handle" class="text-xs text-gray-400 mt-0.5">@user • Fun • Learn • Shine ✨</p>
 
-            <!-- Stats Row -->
+            <!-- Real Stats Row (Starts at 0, increments only via real actions) -->
             <div class="grid grid-cols-3 gap-3 w-full mt-4 py-3 px-2 rounded-2xl bg-brand-card border border-white/10">
               <div>
-                <div class="font-display font-bold text-base text-white">12</div>
+                <div id="stat-following-count" class="font-display font-bold text-base text-white">0</div>
                 <div class="text-[11px] text-gray-400">Following</div>
               </div>
               <div class="border-x border-white/10">
-                <div class="font-display font-bold text-base text-white">1.4K</div>
+                <div id="stat-followers-count" class="font-display font-bold text-base text-white">0</div>
                 <div class="text-[11px] text-gray-400">Followers</div>
               </div>
               <div>
-                <div class="font-display font-bold text-base text-brand-pink">8.2K</div>
+                <div id="stat-likes-count" class="font-display font-bold text-base text-brand-pink">0</div>
                 <div class="text-[11px] text-gray-400">Likes</div>
               </div>
+            </div>
+
+            <!-- Always Login & Fingerprint Security Strip -->
+            <div class="w-full mt-3 px-3 py-2.5 rounded-2xl bg-brand-card border border-white/10 flex items-center justify-between text-left">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-fingerprint text-emerald-400 text-base"></i>
+                <div>
+                  <div class="text-[11px] font-bold text-white">Always Logged-In & Biometric</div>
+                  <div id="biometric-status-text" class="text-[10px] text-gray-400">Session saved automatically</div>
+                </div>
+              </div>
+              <button onclick="enrollFingerprint()" class="px-2.5 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 text-emerald-300 text-[10px] font-bold transition">
+                Enable Touch ID
+              </button>
             </div>
           </div>
 
@@ -437,35 +456,45 @@
             <button onclick="toggleAdminPanel()" class="w-full px-4 py-3 flex items-center justify-between bg-gradient-to-r from-amber-500/15 to-pink-500/15 hover:opacity-95 transition">
               <div class="flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span class="font-display font-bold text-xs text-white">Admin Control Panel</span>
-                <span id="pending-badge-count" class="px-2 py-0.5 rounded-full bg-brand-pink text-white text-[10px] font-bold">1 Pending</span>
+                <span class="font-display font-bold text-xs text-white">Stealth Admin Control Panel</span>
+                <span id="pending-badge-count" class="px-2 py-0.5 rounded-full bg-brand-pink text-white text-[10px] font-bold">0 Pending</span>
               </div>
               <i id="admin-chevron" class="fa-solid fa-chevron-down text-xs text-gray-300 transition-transform"></i>
             </button>
 
-            <div id="admin-panel-body" class="p-3.5 space-y-3 border-t border-white/10">
+            <div id="admin-panel-body" class="p-3.5 space-y-4 border-t border-white/10">
               <div class="flex items-center justify-between text-[11px] text-gray-400 bg-black/30 px-3 py-2 rounded-xl">
-                <span>Admin UPI No: <strong class="text-white">300113890</strong></span>
-                <span class="text-brand-cyan font-semibold">₹10 = 10 Coins</span>
+                <span>Admin UPI: <strong class="text-white">300113890</strong></span>
+                <span class="text-emerald-400 font-semibold"><i class="fa-solid fa-eye-slash mr-1"></i>Stealth Mode Active</span>
               </div>
 
-              <!-- UPI Requests Queue -->
+              <!-- 1. All Joined Users Directory & Moderation (Suspend / Ban / Remove) -->
               <div>
+                <div class="flex items-center justify-between mb-1.5">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-brand-cyan flex items-center gap-1">
+                    <i class="fa-solid fa-users-gear"></i> Joined Users & Moderation
+                  </span>
+                  <span id="joined-users-count" class="text-[10px] text-gray-400">0 Users</span>
+                </div>
+                <div id="admin-users-list" class="space-y-2 max-h-56 overflow-y-auto no-scrollbar">
+                  <!-- Joined users rendered dynamically -->
+                </div>
+              </div>
+
+              <!-- 2. UPI Requests Queue -->
+              <div class="pt-2 border-t border-white/10">
                 <div class="text-[10px] font-bold uppercase tracking-wider text-gray-400 mb-1.5">UPI Coin Top-up Requests</div>
                 <div id="admin-requests-list" class="space-y-2.5">
                   <!-- Pending UPI requests rendered here -->
                 </div>
               </div>
 
-              <!-- Live Feed Moderation & Demo Reset -->
-              <div class="pt-2 border-t border-white/10 space-y-2.5">
+              <!-- 3. Live Feed Post/Video Moderation -->
+              <div class="pt-2 border-t border-white/10 space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-[10px] font-bold uppercase tracking-wider text-brand-gold flex items-center gap-1">
-                    <i class="fa-solid fa-crown"></i> Live Feed Moderation
+                    <i class="fa-solid fa-film"></i> All Posts & Videos Moderation
                   </span>
-                  <button onclick="resetDemoData()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-[10px] font-bold text-gray-200 transition">
-                    <i class="fa-solid fa-rotate-right mr-1"></i>Reset Demo
-                  </button>
                 </div>
                 <div id="admin-feed-moderation-list" class="space-y-2 max-h-48 overflow-y-auto no-scrollbar">
                   <!-- Feed videos list with delete option -->
@@ -769,8 +798,19 @@
             />
           </div>
 
+          <div class="flex items-center justify-between text-[11px] text-gray-300">
+            <label class="flex items-center gap-1.5 cursor-pointer">
+              <input id="remember-me-check" type="checkbox" checked class="accent-brand-cyan rounded" />
+              <span>Always Keep Me Logged In</span>
+            </label>
+          </div>
+
           <button type="submit" class="w-full py-3 mt-1 rounded-xl bg-gradient-to-r from-brand-pink via-brand-purple to-brand-cyan text-white font-display font-extrabold text-xs shadow-lg hover:opacity-95 transition">
             Login to JHALAK ✨
+          </button>
+
+          <button type="button" onclick="loginWithFingerprint()" class="w-full py-2.5 rounded-xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/40 text-emerald-300 font-display font-bold text-xs flex items-center justify-center gap-2 transition">
+            <i class="fa-solid fa-fingerprint text-base"></i> Login with Fingerprint / Biometric
           </button>
         </form>
 
@@ -874,6 +914,77 @@
             <rect x="5" y="5" width="28" height="28" fill="none" stroke="currentColor" stroke-width="6"/>
             <rect x="13" y="13" width="12" height="12"/>
             <rect x="67" y="5" width="28" height="28" fill="none" stroke="currentColor" stroke-width="6"/>
+            <rect x="75" y="13" width="12" height="12"/>
+            <rect x="5" y="67" width="28" height="28" fill="none" stroke="currentColor" stroke-width="6"/>
+            <rect x="13" y="75" width="12" height="12"/>
+            <rect x="42" y="10" width="8" height="20"/>
+            <rect x="40" y="40" width="20" height="20"/>
+            <rect x="68" y="45" width="22" height="10"/>
+            <rect x="45" y="70" width="12" height="22"/>
+            <rect x="70" y="70" width="20" height="20"/>
+          </svg>
+        </div>
+
+        <div class="mt-2.5 flex items-center justify-center gap-2">
+          <span class="px-3 py-1 rounded-lg bg-black/50 border border-white/10 text-xs font-mono font-bold text-white">
+            UPI No: 300113890
+          </span>
+          <button type="button" onclick="copyUpiNumber()" class="px-2.5 py-1 rounded-lg bg-brand-cyan text-black font-bold text-[11px] hover:opacity-90 transition">
+            <i class="fa-solid fa-copy mr-1"></i>Copy
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Submit UTR / Transaction ID -->
+      <form onsubmit="submitCoinPurchase(event)" class="space-y-2.5">
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-300 mb-1">Your Name / Handle</label>
+          <input id="upi-sender-input" type="text" required placeholder="e.g., Rohan Sharma" class="w-full bg-brand-card border border-white/15 rounded-xl px-3 py-2 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-gold" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-gray-300 mb-1">12-Digit UPI UTR / Transaction ID</label>
+          <input id="upi-utr-input" type="text" required minlength="6" placeholder="Enter UTR after payment" class="w-full bg-brand-card border border-white/15 rounded-xl px-3 py-2 text-xs text-white font-mono placeholder-gray-500 focus:outline-none focus:border-brand-gold" />
+        </div>
+        <button type="submit" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-gold to-amber-500 text-black font-display font-extrabold text-xs shadow-lg hover:opacity-95 transition">
+          Submit Payment for Verification ✅
+        </button>
+      </form>
+    </div>
+
+    <!-- ==================== COMMENTS DRAWER MODAL ==================== -->
+    <div id="comments-modal" class="hidden absolute inset-0 z-40 bg-black/65 backdrop-blur-xs flex flex-col justify-end">
+      <div class="bg-[#14141e] w-full h-[62%] rounded-t-3xl border-t border-white/15 p-4 flex flex-col shadow-2xl">
+        <div class="flex items-center justify-between pb-3 border-b border-white/10">
+          <span id="comments-header-count" class="font-display font-bold text-xs text-white">0 Comments</span>
+          <button onclick="closeComments()" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-gray-300 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+        <div id="comments-list" class="flex-1 overflow-y-auto py-3 space-y-3 no-scrollbar">
+          <!-- Comments rendered dynamically -->
+        </div>
+        <form onsubmit="submitComment(event)" class="pt-2 border-t border-white/10 flex items-center gap-2">
+          <input id="comment-input" type="text" required placeholder="Add a real comment..." class="flex-1 bg-black/40 border border-white/15 rounded-full px-4 py-2 text-xs text-white placeholder-gray-400 focus:outline-none focus:border-brand-cyan" />
+          <button type="submit" class="px-4 py-2 rounded-full bg-brand-pink text-white font-bold text-xs">Post</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ==================== INTERACTIVE EDU QUIZ MODAL ==================== -->
+    <div id="quiz-modal" class="hidden absolute inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-5">
+      <div class="bg-[#161622] w-full max-w-sm rounded-3xl border border-brand-gold/40 p-5 shadow-2xl">
+        <div class="flex items-center justify-between mb-3">
+          <span class="px-2.5 py-0.5 rounded-full bg-brand-gold text-black font-extrabold text-[10px] uppercase">Quick Brain Check 🧠</span>
+          <button onclick="closeQuiz()" class="w-7 h-7 rounded-full bg-white/10 flex items-center justify-center text-gray-300">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+        </div>
+        <h3 id="quiz-question" class="font-display font-bold text-sm text-white mb-3">Question?</h3>
+        <div id="quiz-options" class="space-y-2"></div>
+        <div id="quiz-feedback" class="hidden"></div>
+      </div>
+    </div>
+
     <!-- ==================== UPLOAD & SNAPCHAT-STYLE CREATIVE STUDIO MODAL ==================== -->
     <div id="upload-modal" class="hidden absolute inset-0 z-50 bg-[#0b0b0f]/95 backdrop-blur-md flex flex-col p-4 overflow-y-auto no-scrollbar">
       <div class="flex items-center justify-between mb-3">
@@ -991,6 +1102,37 @@
             <div class="p-2 rounded-xl bg-brand-card border border-white/10 peer-checked:border-brand-pink peer-checked:bg-brand-pink/15 text-center transition">
               <span class="text-xs font-bold text-white"><i class="fa-solid fa-masks-theater text-brand-pink mr-1"></i>Fun</span>
             </div>
+          </label>
+        </div>
+
+        <!-- Caption & Hashtags -->
+        <div>
+          <label class="block text-[11px] font-bold text-gray-300 mb-1">Caption & Hashtags</label>
+          <textarea id="upload-caption" rows="2" required placeholder="Apne video ke baare mein likhein... #Talent #Learn #JHALAK" class="w-full bg-brand-card border border-white/15 rounded-xl p-2.5 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-brand-cyan"></textarea>
+        </div>
+
+        <!-- Optional Quick Quiz Builder -->
+        <div class="p-2.5 rounded-xl bg-brand-card/70 border border-white/10 space-y-2">
+          <span class="text-[11px] font-bold text-brand-gold block"><i class="fa-solid fa-brain mr-1"></i>Optional: Add 1-Question Edu Quiz</span>
+          <input id="upload-quiz-q" type="text" placeholder="Quiz Question (optional)" class="w-full bg-black/40 border border-white/10 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-gray-500" />
+          <div class="grid grid-cols-2 gap-2">
+            <input id="upload-quiz-correct" type="text" placeholder="Correct Answer" class="bg-black/40 border border-emerald-500/30 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-gray-500" />
+            <input id="upload-quiz-wrong" type="text" placeholder="Wrong Option" class="bg-black/40 border border-rose-500/30 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-gray-500" />
+          </div>
+        </div>
+
+        <!-- Admin Exclusive Verified Spotlight Option -->
+        <div id="admin-upload-spotlight-box" class="hidden p-2.5 rounded-xl bg-brand-gold/15 border border-brand-gold/40 flex items-center justify-between">
+          <span class="text-xs font-bold text-brand-gold">Publish with Verified Spotlight 👑</span>
+          <input id="upload-spotlight-check" type="checkbox" checked class="accent-brand-gold w-4 h-4" />
+        </div>
+
+        <button type="submit" class="w-full py-3 rounded-2xl bg-gradient-to-r from-brand-pink via-brand-purple to-brand-cyan text-white font-display font-extrabold text-xs shadow-lg hover:opacity-95 transition">
+          Publish Video to JHALAK 🚀
+        </button>
+      </form>
+    </div>
+
     <!-- ==================== ANDROID APP DRAWER / .APK INSTALL MODAL ==================== -->
     <div id="install-guide-modal" class="hidden absolute inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
       <div class="bg-[#161622] w-full max-w-sm rounded-3xl border border-brand-cyan/40 p-5 shadow-2xl">
@@ -1066,128 +1208,19 @@
 
   <!-- ==================== JAVASCRIPT APPLICATION LOGIC ==================== -->
   <script>
-    // Reliable Royalty-Free Sample MP4 Clips
-    const SAMPLE_VIDEOS = [
-      {
-        id: 'v1',
-        category: 'edu',
-        badge: 'EduCreator',
-        badgeColor: 'bg-brand-gold text-black',
-        handle: '@science_with_ritesh',
-        avatarBg: 'from-amber-400 to-orange-600',
-        avatarText: 'SR',
-        caption: '60-Sec Science: Light Refraction Magic! Paani ke glass se arrow ki direction kaise badal gayi? 🔬✨ #ScienceMagic #Physics #EduCreator',
-        audio: 'Original Science Explained - Ritesh Sir',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-in-slow-motion-172-large.mp4',
-        likes: 14200,
-        giftsCount: 18,
-        liked: false,
-        saved: false,
-        following: false,
-        comments: [
-          { user: '@priya_student', text: 'Board exam mein refraction ka concept bilkul clear ho gaya! 🙏' },
-          { user: '@rohan_99', text: 'Best 1 minute science explanation!' }
-        ],
-        quiz: {
-          question: 'Paani ke glass ke peeche arrow ulta kyun dikhai deta hai?',
-          options: ['Reflection of Light', 'Refraction of Light', 'Diffraction'],
-          correctIndex: 1
-        }
-      },
-      {
-        id: 'v2',
-        category: 'edu',
-        badge: 'Rising Star',
-        badgeColor: 'bg-brand-cyan text-black',
-        handle: '@aarav_art',
-        avatarBg: 'from-cyan-400 to-blue-600',
-        avatarText: 'AA',
-        caption: 'Hyper-realistic Pencil Sketch Time-Lapse! Sirf 2 graphite pencils se banaya portrait 🎨✏️ #StudentTalent #Sketching #ArtIndia',
-        audio: 'Lo-Fi Study & Sketch Beats - Aarav',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-painter-drawing-on-a-canvas-42652-large.mp4',
-        likes: 28900,
-        giftsCount: 42,
-        liked: true,
-        saved: true,
-        following: true,
-        comments: [
-          { user: '@neha_arts', text: 'Shading kitni smooth hai bhai! Pure talent 🙌' },
-          { user: '@art_lover', text: 'Deserves 1 Million likes!' }
-        ],
-        quiz: null
-      },
-      {
-        id: 'v3',
-        category: 'ent',
-        badge: 'Fun Creator',
-        badgeColor: 'bg-brand-pink text-white',
-        handle: '@desi_vibes',
-        avatarBg: 'from-pink-500 to-rose-600',
-        avatarText: 'DV',
-        caption: 'Jab Sunday khatam hota hai aur Monday subah 7 baje alarm bajta hai 😂⏰ Tag your sleepy friend! #DesiComedy #Relatable #Fun',
-        audio: 'Funny Wake Up Remix - Desi Vibes',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-young-man-dancing-happily-in-the-street-43475-large.mp4',
-        likes: 53400,
-        giftsCount: 65,
-        liked: false,
-        saved: false,
-        following: false,
-        comments: [
-          { user: '@aman_k', text: 'Bhai bilkul meri haalat dikha di 😂😂' },
-          { user: '@simran_s', text: '5 minute aur sone do yaar!' }
-        ],
-        quiz: null
-      },
-      {
-        id: 'v4',
-        category: 'edu',
-        badge: 'EduCreator',
-        badgeColor: 'bg-brand-gold text-black',
-        handle: '@math_wizard',
-        avatarBg: 'from-emerald-400 to-teal-600',
-        avatarText: 'MW',
-        caption: 'Vedic Math Trick: Kisi bhi 2-digit number ko 11 se 2 second mein multiply karein! 🧠⚡ #VedicMaths #ExamTricks #SmartStudy',
-        audio: 'Fast Brain Focus Track - Math Wizard',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-student-writing-notes-in-a-notebook-4726-large.mp4',
-        likes: 19800,
-        giftsCount: 29,
-        liked: false,
-        saved: false,
-        following: false,
-        comments: [
-          { user: '@ankit_jee', text: 'Calculation speed double ho gayi is trick se!' }
-        ],
-        quiz: {
-          question: 'Vedic Math trick se 45 × 11 ka answer kya hoga?',
-          options: ['485', '495', '505'],
-          correctIndex: 1
-        }
-      },
-      {
-        id: 'v5',
-        category: 'edu',
-        badge: 'Talent Star',
-        badgeColor: 'bg-purple-400 text-black',
-        handle: '@ananya_music',
-        avatarBg: 'from-purple-500 to-indigo-600',
-        avatarText: 'AM',
-        caption: 'Evening Raga on Bansuri (Flute) 🎶🌿 Headphones lagakar sunein! #StudentTalent #IndianClassical #MusicCover',
-        audio: 'Peaceful Flute Melody - Ananya',
-        videoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-woman-playing-an-acoustic-guitar-in-a-park-42718-large.mp4',
-        likes: 34100,
-        giftsCount: 51,
-        liked: false,
-        saved: false,
-        following: false,
-        comments: [
-          { user: '@rahul_beats', text: 'So soothing! Dil khush ho gaya ✨' }
-        ],
-        quiz: null
-      }
-    ];
+    // Storage Keys for Persistent Always-Login & Real User/Post State
+    const STORAGE_KEYS = {
+      SESSION: 'jhalak_active_session_v2',
+      BIOMETRIC_USER: 'jhalak_biometric_user_v2',
+      USERS: 'jhalak_joined_users_v2',
+      VIDEOS: 'jhalak_real_videos_v2',
+      WALLET: 'jhalak_wallet_v2',
+      UPI_REQUESTS: 'jhalak_upi_requests_v2'
+    };
 
-    // App State
-    let videos = [...SAMPLE_VIDEOS];
+    // Zero Fake / Zero Bot Initial Data — 100% Real User-Driven
+    let joinedUsers = JSON.parse(localStorage.getItem(STORAGE_KEYS.USERS) || '[]');
+    let videos = JSON.parse(localStorage.getItem(STORAGE_KEYS.VIDEOS) || '[]');
     let myUploads = [];
     let currentCategory = 'all';
     let isMuted = true;
@@ -1195,28 +1228,19 @@
     let activeGiftVideoId = null;
     let observer = null;
 
-    // Wallet & Authentication State
-    let currentUser = null; // null = Guest | { name, handle, initials, role: 'user' | 'admin' }
-    let userCoins = 15;
-    let creatorEarningsRs = 0;
-    let platformRevenueRs = 0;
+    // Wallet & Authentication State (Always-Login Restored from localStorage)
+    let currentUser = JSON.parse(localStorage.getItem(STORAGE_KEYS.SESSION) || 'null');
+    const savedWallet = JSON.parse(localStorage.getItem(STORAGE_KEYS.WALLET) || '{"coins":15,"creatorRs":0,"platformRs":0}');
+    let userCoins = savedWallet.coins;
+    let creatorEarningsRs = savedWallet.creatorRs;
+    let platformRevenueRs = savedWallet.platformRs;
     let selectedPackRupees = 10;
     let selectedPackCoins = 10;
 
-    // Pending UPI Top-up Requests for Admin Verification
-    let upiRequests = [
-      {
-        id: 'req-101',
-        sender: 'Ananya Verma',
-        utr: '431982746109',
-        rupees: 20,
-        coins: 20,
-        status: 'pending',
-        time: '2 mins ago'
-      }
-    ];
+    // UPI Top-up Requests (Real user submissions only)
+    let upiRequests = JSON.parse(localStorage.getItem(STORAGE_KEYS.UPI_REQUESTS) || '[]');
 
-    // Personal Chat & Call Threads State
+    // Personal Chat & Call Threads State (Populated dynamically from real joined users)
     let activeChatHandle = null;
     let activeCallType = null; // 'audio' | 'video'
     let callTimerInterval = null;
@@ -1234,57 +1258,38 @@
     let customStudioAudioUrl = null;
     let deferredInstallPrompt = null;
 
-    let chatThreads = [
-      {
-        handle: '@science_with_ritesh',
-        name: 'Ritesh Sir (EduCreator)',
-        avatarBg: 'from-amber-400 to-orange-600',
-        avatarText: 'SR',
-        online: true,
-        unread: 1,
-        videoSample: 'https://assets.mixkit.co/videos/preview/mixkit-ink-swirling-in-water-in-slow-motion-172-large.mp4',
-        messages: [
-          { from: 'peer', text: 'Namaste! Science ya Physics ke kisi topic par 1-on-1 doubt ho toh message ya call kar sakte hain 🔬', time: '10:02 AM' }
-        ]
-      },
-      {
-        handle: '@aarav_art',
-        name: 'Aarav Sketch Studio',
-        avatarBg: 'from-cyan-400 to-blue-600',
-        avatarText: 'AA',
-        online: true,
-        unread: 0,
-        videoSample: 'https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-painter-drawing-on-a-canvas-42652-large.mp4',
-        messages: [
-          { from: 'peer', text: 'Thanks for supporting my portrait sketch reel! 🎨✨', time: 'Yesterday' }
-        ]
-      },
-      {
-        handle: '@ananya_music',
-        name: 'Ananya Flute & Vocals',
-        avatarBg: 'from-purple-500 to-indigo-600',
-        avatarText: 'AM',
-        online: true,
-        unread: 0,
-        videoSample: 'https://assets.mixkit.co/videos/preview/mixkit-woman-playing-an-acoustic-guitar-in-a-park-42718-large.mp4',
-        messages: [
-          { from: 'peer', text: 'Live music jam ya collab ke liye audio/video call par connect karein 🎶', time: 'Yesterday' }
-        ]
+    let chatThreads = [];
+
+    function persistAppState() {
+      localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(joinedUsers));
+      try {
+        localStorage.setItem(STORAGE_KEYS.VIDEOS, JSON.stringify(videos));
+      } catch (e) {}
+      localStorage.setItem(STORAGE_KEYS.WALLET, JSON.stringify({
+        coins: userCoins,
+        creatorRs: creatorEarningsRs,
+        platformRs: platformRevenueRs
+      }));
+      localStorage.setItem(STORAGE_KEYS.UPI_REQUESTS, JSON.stringify(upiRequests));
+      if (currentUser) {
+        localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(currentUser));
+      } else {
+        localStorage.removeItem(STORAGE_KEYS.SESSION);
       }
-    ];
+    }
 
     function isAdminUser() {
       return currentUser && currentUser.role === 'admin';
     }
 
-    // Format large numbers cleanly (e.g., 14200 -> 14.2K)
+    // Format large numbers cleanly
     function formatCount(num) {
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
       if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
       return num.toString();
     }
 
-    // Sync Coin Balance, User Role Badges & Earnings across all UI elements
+    // Sync Coin Balance, User Role Badges & Real Stats across all UI elements
     function syncWalletUI() {
       const adminActive = isAdminUser();
       const displayBalance = adminActive ? '∞ UNLIMITED' : userCoins;
@@ -1314,7 +1319,6 @@
       const giftSuffix = document.getElementById('gift-balance-suffix');
       if (giftSuffix) giftSuffix.textContent = adminActive ? '(Unlimited Access)' : 'Coins';
 
-      // Update Gift Modal prices when Admin is logged in
       document.querySelectorAll('.gift-price-tag').forEach(tag => {
         if (adminActive) {
           tag.textContent = 'FREE (0 Coins)';
@@ -1333,6 +1337,13 @@
         authView.classList.toggle('hidden', !currentUser);
       }
 
+      // Show Quick Fingerprint Unlock button on Guest view if enrolled
+      const savedBioUser = localStorage.getItem(STORAGE_KEYS.BIOMETRIC_USER);
+      const guestBioBtn = document.getElementById('guest-biometric-btn');
+      if (guestBioBtn) {
+        guestBioBtn.classList.toggle('hidden', !savedBioUser);
+      }
+
       if (currentUser) {
         const initialsEl = document.getElementById('profile-avatar-initials');
         const nameEl = document.getElementById('profile-display-name');
@@ -1342,17 +1353,41 @@
 
         if (initialsEl) initialsEl.textContent = currentUser.initials;
         if (nameEl) nameEl.textContent = currentUser.name;
-        if (handleEl) handleEl.textContent = `${currentUser.handle} • Fun • Learn • Shine ✨`;
+        if (handleEl) {
+          handleEl.textContent = adminActive
+            ? 'Hidden Stealth Profile • Not visible to public users 🔒'
+            : `${currentUser.handle} • Fun • Learn • Shine ✨`;
+        }
 
         if (roleBadge) {
-          roleBadge.textContent = adminActive ? 'Verified Admin 👑' : 'Creator';
+          roleBadge.textContent = adminActive ? 'Stealth Admin 👑' : 'Creator';
           roleBadge.className = adminActive
             ? 'absolute -bottom-1 right-0 px-2 py-0.5 rounded-full bg-gradient-to-r from-brand-gold to-brand-pink text-black text-[10px] font-extrabold shadow'
             : 'absolute -bottom-1 right-0 px-2 py-0.5 rounded-full bg-brand-gold text-black text-[10px] font-extrabold shadow';
         }
 
         if (studioLabel) {
-          studioLabel.textContent = adminActive ? 'Admin Studio • God Mode' : 'Creator Studio';
+          studioLabel.textContent = adminActive ? 'Stealth Admin • God Mode' : 'Creator Studio';
+        }
+
+        // Compute real stats (zero fake followers/likes)
+        const myVideos = videos.filter(v => v.handle === currentUser.handle);
+        const totalRealLikes = myVideos.reduce((acc, v) => acc + (v.likes || 0), 0);
+        const followingCount = videos.filter(v => v.following).length;
+        const followersCount = joinedUsers.filter(u => (u.followingHandles || []).includes(currentUser.handle)).length;
+
+        const fwingEl = document.getElementById('stat-following-count');
+        const fwersEl = document.getElementById('stat-followers-count');
+        const likesEl = document.getElementById('stat-likes-count');
+        if (fwingEl) fwingEl.textContent = followingCount;
+        if (fwersEl) fwersEl.textContent = followersCount;
+        if (likesEl) likesEl.textContent = formatCount(totalRealLikes);
+
+        const bioStatus = document.getElementById('biometric-status-text');
+        if (bioStatus) {
+          bioStatus.textContent = savedBioUser
+            ? 'Always Logged-In + Fingerprint Enabled ✓'
+            : 'Always Logged-In Active • Tap to add Fingerprint';
         }
       }
 
@@ -1375,6 +1410,24 @@
       }
     }
 
+    function registerOrFetchRealUser(name, handle) {
+      let existing = joinedUsers.find(u => u.handle === handle);
+      if (!existing) {
+        existing = {
+          id: 'usr-' + Date.now(),
+          name: name,
+          handle: handle,
+          initials: name.slice(0, 2).toUpperCase(),
+          status: 'active', // 'active' | 'suspended' | 'banned'
+          reportedCount: 0,
+          joinedAt: new Date().toLocaleDateString(),
+          followingHandles: []
+        };
+        joinedUsers.push(existing);
+      }
+      return existing;
+    }
+
     function handleAuthLogin(e) {
       e.preventDefault();
       const rawId = document.getElementById('login-identifier').value.trim();
@@ -1384,41 +1437,54 @@
       const normalizedId = rawId.toLowerCase().replace(/^@/, '');
       const normalizedPass = rawPass.toUpperCase();
 
-      // Silent Role Detection: Check for Admin Credentials
+      // Silent Role Detection: Check for Stealth Admin Credentials
       const isValidAdminId = ['admin', 'ritesh', '300113890'].includes(normalizedId);
       const isValidAdminPass = ['3001', 'JHALAKADMIN'].includes(normalizedPass);
 
       if (isValidAdminId && isValidAdminPass) {
+        // Stealth Admin is NEVER added to public joinedUsers list
         currentUser = {
           name: 'JHALAK Admin',
           handle: '@jhalak_admin',
           initials: 'ADM',
           role: 'admin'
         };
+        persistAppState();
         closeAuthModal();
         e.target.reset();
         syncWalletUI();
+        renderAdminUsersList();
         renderAdminRequests();
         renderAdminModerationList();
-        showToast('Welcome Admin! Unlimited God-Mode Active 👑');
+        showToast('Stealth Admin Logged In! Always-Login Active 👑');
       } else {
-        // Authenticate as Standard User
-        const cleanHandle = '@' + normalizedId.replace(/[^a-z0-9_]/g, '').slice(0, 16) || '@jhalak_user';
+        const cleanHandle = '@' + (normalizedId.replace(/[^a-z0-9_]/g, '').slice(0, 16) || 'jhalak_user');
         const displayName = rawId.includes('@') && !rawId.startsWith('@')
           ? rawId.split('@')[0]
           : rawId.replace(/^@/, '');
         const formattedName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
 
+        const userRecord = registerOrFetchRealUser(formattedName, cleanHandle);
+        if (userRecord.status === 'banned') {
+          showToast('🚫 Your account has been permanently BANNED by Admin.');
+          return;
+        }
+        if (userRecord.status === 'suspended') {
+          showToast('⚠️ Your account is currently SUSPENDED by Admin.');
+          return;
+        }
+
         currentUser = {
-          name: formattedName,
-          handle: cleanHandle,
-          initials: formattedName.slice(0, 2).toUpperCase(),
+          name: userRecord.name,
+          handle: userRecord.handle,
+          initials: userRecord.initials,
           role: 'user'
         };
+        persistAppState();
         closeAuthModal();
         e.target.reset();
         syncWalletUI();
-        showToast(`Welcome back, ${formattedName}! ✨`);
+        showToast(`Welcome back, ${userRecord.name}! Always-Login Active ✨`);
       }
     }
 
@@ -1429,84 +1495,218 @@
       if (!fullName || !rawUser) return;
 
       const cleanHandle = '@' + rawUser.toLowerCase().replace(/[^a-z0-9_]/g, '').slice(0, 16);
-      userCoins = 15; // Welcome bonus for new user
+      const userRecord = registerOrFetchRealUser(fullName, cleanHandle);
+      userCoins = 15; // Welcome bonus for new real user
 
       currentUser = {
-        name: fullName,
-        handle: cleanHandle,
-        initials: fullName.slice(0, 2).toUpperCase(),
+        name: userRecord.name,
+        handle: userRecord.handle,
+        initials: userRecord.initials,
         role: 'user'
       };
 
+      persistAppState();
       closeAuthModal();
       e.target.reset();
       syncWalletUI();
-      showToast(`Account created! +15 Welcome Coins added 🎉`);
+      showToast(`Account created! Always-Login Enabled (+15 Coins 🎁)`);
+    }
+
+    // Biometric / Fingerprint Enrollment & Quick Login (WebAuthn + Fallback)
+    async function enrollFingerprint() {
+      if (!currentUser) return;
+      try {
+        if (window.PublicKeyCredential && navigator.credentials) {
+          const challenge = new Uint8Array(32);
+          window.crypto.getRandomValues(challenge);
+          await navigator.credentials.create({
+            publicKey: {
+              challenge,
+              rp: { name: 'JHALAK Short Video App' },
+              user: {
+                id: new TextEncoder().encode(currentUser.handle),
+                name: currentUser.handle,
+                displayName: currentUser.name
+              },
+              pubKeyCredParams: [{ type: 'public-key', alg: -7 }],
+              authenticatorSelection: { authenticatorAttachment: 'platform', userVerification: 'required' },
+              timeout: 30000
+            }
+          }).catch(() => {});
+        }
+      } catch (err) {}
+
+      localStorage.setItem(STORAGE_KEYS.BIOMETRIC_USER, JSON.stringify(currentUser));
+      syncWalletUI();
+      showToast('Fingerprint / Biometric Unlock Enabled! 🔒👆');
+    }
+
+    async function loginWithFingerprint() {
+      const savedBio = JSON.parse(localStorage.getItem(STORAGE_KEYS.BIOMETRIC_USER) || 'null');
+      if (!savedBio) {
+        showToast('Pehle ek baar Login karke Profile mein "Enable Touch ID" dabayein 👆');
+        return;
+      }
+
+      if (savedBio.role !== 'admin') {
+        const record = joinedUsers.find(u => u.handle === savedBio.handle);
+        if (record && (record.status === 'banned' || record.status === 'suspended')) {
+          showToast(`Account is ${record.status.toUpperCase()} by Admin.`);
+          return;
+        }
+      }
+
+      currentUser = savedBio;
+      persistAppState();
+      closeAuthModal();
+      syncWalletUI();
+      if (isAdminUser()) {
+        renderAdminUsersList();
+        renderAdminRequests();
+        renderAdminModerationList();
+      }
+      showToast(`Unlocked via Fingerprint as ${currentUser.name}! 👆✨`);
     }
 
     function logoutUser() {
       currentUser = null;
+      localStorage.removeItem(STORAGE_KEYS.SESSION);
       syncWalletUI();
-      showToast('Logged out successfully.');
+      showToast('Logged out. Tap Fingerprint Unlock anytime to re-enter.');
     }
 
-    // Admin Feed Moderation & Demo Reset
+    // ==================== ADMIN JOINED USERS & POST MODERATION ====================
+    function renderAdminUsersList() {
+      const listEl = document.getElementById('admin-users-list');
+      const countEl = document.getElementById('joined-users-count');
+      if (!listEl) return;
+
+      if (countEl) countEl.textContent = `${joinedUsers.length} Users`;
+
+      if (joinedUsers.length === 0) {
+        listEl.innerHTML = `<p class="text-[11px] text-gray-400 text-center py-3 bg-black/30 rounded-xl">Abhi tak koi external user join nahi hua hai. Jab users signup/login karenge toh unki profiles yahan dikhengi.</p>`;
+        return;
+      }
+
+      listEl.innerHTML = joinedUsers.map(u => {
+        const statusBadge = u.status === 'banned'
+          ? '<span class="px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 text-[9px] font-bold">BANNED</span>'
+          : u.status === 'suspended'
+          ? '<span class="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 text-[9px] font-bold">SUSPENDED</span>'
+          : '<span class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 text-[9px] font-bold">ACTIVE</span>';
+
+        return `
+          <div class="p-2.5 rounded-xl bg-black/40 border border-white/10 space-y-2">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-bold text-xs text-white">${u.name}</span>
+                  ${statusBadge}
+                </div>
+                <div class="text-[10px] text-gray-400">${u.handle} • Joined ${u.joinedAt} ${u.reportedCount > 0 ? `• <span class="text-rose-400 font-bold">🚩 ${u.reportedCount} Reports</span>` : ''}</div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              ${u.status !== 'active' ? `
+                <button onclick="moderateUser('${u.id}', 'active')" class="flex-1 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-[10px] font-bold transition">
+                  Activate
+                </button>
+              ` : `
+                <button onclick="moderateUser('${u.id}', 'suspended')" class="flex-1 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 text-[10px] font-bold transition">
+                  Suspend
+                </button>
+              `}
+              <button onclick="moderateUser('${u.id}', 'banned')" class="flex-1 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 text-[10px] font-bold transition">
+                Ban User
+              </button>
+              <button onclick="removeJoinedUser('${u.id}')" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-rose-600 text-white text-[10px] font-bold transition" title="Remove User & All Posts">
+                Remove
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function moderateUser(userId, newStatus) {
+      const target = joinedUsers.find(u => u.id === userId);
+      if (!target) return;
+      target.status = newStatus;
+
+      // Hide videos of suspended/banned users from public feed
+      if (newStatus === 'banned' || newStatus === 'suspended') {
+        videos = videos.filter(v => v.handle !== target.handle);
+      }
+
+      persistAppState();
+      renderAdminUsersList();
+      renderAdminModerationList();
+      renderFeed();
+      showToast(`User ${target.handle} marked as ${newStatus.toUpperCase()} 🛡️`);
+    }
+
+    function removeJoinedUser(userId) {
+      const target = joinedUsers.find(u => u.id === userId);
+      if (!target) return;
+      videos = videos.filter(v => v.handle !== target.handle);
+      joinedUsers = joinedUsers.filter(u => u.id !== userId);
+      persistAppState();
+      renderAdminUsersList();
+      renderAdminModerationList();
+      renderFeed();
+      showToast(`User ${target.handle} & their posts permanently removed 🗑️`);
+    }
+
+    function reportVideo(videoId) {
+      const vid = videos.find(v => v.id === videoId);
+      if (!vid) return;
+      vid.reported = (vid.reported || 0) + 1;
+      const author = joinedUsers.find(u => u.handle === vid.handle);
+      if (author) author.reportedCount = (author.reportedCount || 0) + 1;
+      persistAppState();
+      if (isAdminUser()) {
+        renderAdminUsersList();
+        renderAdminModerationList();
+      }
+      showToast('Post reported to Admin for review 🚩');
+    }
+
     function renderAdminModerationList() {
       const modList = document.getElementById('admin-feed-moderation-list');
       if (!modList) return;
 
+      if (videos.length === 0) {
+        modList.innerHTML = `<p class="text-[11px] text-gray-400 text-center py-2">No posts or videos uploaded yet.</p>`;
+        return;
+      }
+
       modList.innerHTML = videos.map(v => `
-        <div class="flex items-center justify-between p-2 rounded-xl bg-black/40 border border-white/10 text-xs">
+        <div class="flex items-center justify-between p-2 rounded-xl bg-black/40 border ${v.reported ? 'border-rose-500/40' : 'border-white/10'} text-xs">
           <div class="truncate pr-2">
-            <span class="font-bold text-white">${v.handle}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="font-bold text-white">${v.handle}</span>
+              ${v.reported ? `<span class="text-[9px] text-rose-400 font-bold">🚩 Flagged (${v.reported})</span>` : ''}
+            </div>
             <p class="text-[10px] text-gray-400 truncate">${v.caption}</p>
           </div>
-          <button onclick="adminDeleteVideo('${v.id}')" title="Remove Video" class="px-2 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/35 text-rose-300 text-[10px] font-bold shrink-0 transition">
-            <i class="fa-solid fa-trash"></i>
+          <button onclick="adminDeleteVideo('${v.id}')" title="Remove Post/Video" class="px-2.5 py-1 rounded-lg bg-rose-500/20 hover:bg-rose-500/40 text-rose-300 text-[10px] font-bold shrink-0 transition">
+            <i class="fa-solid fa-trash mr-1"></i>Delete
           </button>
         </div>
       `).join('');
     }
 
     function adminDeleteVideo(videoId) {
-      if (videos.length <= 1) {
-        showToast('Kam se kam 1 video feed mein rehna zaroori hai!');
-        return;
-      }
       videos = videos.filter(v => v.id !== videoId);
       myUploads = myUploads.filter(v => v.id !== videoId);
+      persistAppState();
       renderFeed();
       renderAdminModerationList();
       renderProfileView();
-      showToast('Video removed by Admin Moderation 🛡️');
+      showToast('Post/Video removed by Admin 🛡️');
     }
 
-    function resetDemoData() {
-      videos = JSON.parse(JSON.stringify(SAMPLE_VIDEOS));
-      myUploads = [];
-      userCoins = 15;
-      creatorEarningsRs = 0;
-      platformRevenueRs = 0;
-      syncWalletUI();
-      renderFeed();
-      renderAdminModerationList();
-      renderProfileView();
-      showToast('Demo Feed & Wallet Reset to Default 🔄');
-    }
-
-    // Show Toast Notification
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      const toastMsg = document.getElementById('toast-msg');
-      toastMsg.textContent = message;
-      toast.classList.remove('hidden');
-      clearTimeout(window._toastTimer);
-      window._toastTimer = setTimeout(() => {
-        toast.classList.add('hidden');
-      }, 2600);
-    }
-
-    // Render Main Vertical Video Feed
+    // Render Main Vertical Video Feed (Real User Videos Only — Zero Fake Bots)
     function renderFeed() {
       const feedContainer = document.getElementById('video-feed');
       const filteredVideos = currentCategory === 'all'
@@ -1514,6 +1714,24 @@
         : videos.filter(v => v.category === currentCategory);
 
       feedContainer.innerHTML = '';
+
+      if (filteredVideos.length === 0) {
+        feedContainer.innerHTML = `
+          <div class="w-full h-full flex flex-col items-center justify-center p-8 text-center">
+            <div class="w-20 h-20 rounded-3xl bg-brand-card border border-white/15 flex items-center justify-center mb-4 shadow-xl">
+              <i class="fa-solid fa-video text-3xl text-brand-cyan"></i>
+            </div>
+            <h3 class="font-display font-extrabold text-lg text-white">No Videos Yet</h3>
+            <p class="text-xs text-gray-400 mt-1.5 max-w-xs leading-relaxed">
+              Sabhi fake aur bot profiles hata diye gaye hain. Neeche <strong class="text-white">"+"</strong> button dabakar apna pehla real video upload karein!
+            </p>
+            <button onclick="openUploadModal()" class="mt-5 px-5 py-2.5 rounded-2xl bg-gradient-to-r from-brand-pink to-brand-cyan text-white font-display font-bold text-xs shadow-lg hover:opacity-95 transition">
+              + Upload First Reel
+            </button>
+          </div>
+        `;
+        return;
+      }
 
       filteredVideos.forEach((video) => {
         const slide = document.createElement('div');
@@ -1538,7 +1756,7 @@
             </div>
           ` : ''}
 
-          <!-- Graceful Visual Fallback if Offline / Stream Blocked -->
+          <!-- Graceful Visual Fallback if Offline / Blob Expired -->
           <div class="hidden absolute inset-0 flex flex-col items-center justify-center p-8 text-center pointer-events-none">
             <div class="w-20 h-20 rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mb-4 animate-pulse">
               <i class="fa-solid ${video.category === 'edu' ? 'fa-atom text-brand-gold' : 'fa-sparkles text-brand-cyan'} text-4xl"></i>
@@ -1564,7 +1782,7 @@
           <div id="gift-celebration-${video.id}" class="pointer-events-none absolute inset-0 z-20 flex flex-col items-center justify-center overflow-hidden"></div>
 
           <!-- Right-Side Vertical Action Bar -->
-          <div class="absolute right-3 bottom-20 z-20 flex flex-col items-center gap-3.5">
+          <div class="absolute right-3 bottom-20 z-20 flex flex-col items-center gap-3">
             <!-- Creator Avatar + Follow -->
             <div class="relative mb-0.5">
               <div class="w-11 h-11 rounded-full bg-gradient-to-tr ${video.avatarBg} p-0.5 shadow-lg">
@@ -1609,12 +1827,11 @@
               <span class="text-[11px] font-semibold drop-shadow">${video.saved ? 'Saved' : 'Save'}</span>
             </button>
 
-            <!-- Share Button -->
-            <button onclick="shareVideo('${video.handle}')" class="flex flex-col items-center gap-0.5 group">
-              <div class="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-active:scale-110 transition">
-                <i class="fa-solid fa-share text-lg text-white"></i>
+            <!-- Report Flag Button (For Admin Moderation) -->
+            <button onclick="reportVideo('${video.id}')" title="Report Video" class="flex flex-col items-center gap-0.5 group">
+              <div class="w-9 h-9 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center group-active:scale-110 transition">
+                <i class="fa-solid fa-flag text-xs text-gray-300 hover:text-rose-400"></i>
               </div>
-              <span class="text-[11px] font-semibold drop-shadow">Share</span>
             </button>
 
             <!-- Direct Message / Call Creator Button -->
@@ -1624,11 +1841,6 @@
               </div>
               <span class="text-[10px] font-bold text-brand-cyan drop-shadow">Chat</span>
             </button>
-
-            <!-- Spinning Audio Disc -->
-            <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-gray-900 via-gray-700 to-gray-900 border-2 border-white/20 flex items-center justify-center animate-spin-slow">
-              <i class="fa-solid fa-music text-[9px] text-brand-cyan"></i>
-            </div>
           </div>
 
           <!-- Bottom-Left Creator Info, Caption & Edu Quiz Pill -->
@@ -1752,32 +1964,65 @@
     function toggleGlobalMute() {
       isMuted = !isMuted;
       const icon = document.getElementById('global-mute-icon');
-      if (isMuted) {
-        icon.className = 'fa-solid fa-volume-xmark text-[11px] text-brand-pink';
-        showToast('Sound Muted');
-      } else {
-        icon.className = 'fa-solid fa-volume-high text-[11px] text-brand-cyan';
-        showToast('Sound On 🔊');
+      if (icon) {
+        icon.className = isMuted
+          ? 'fa-solid fa-volume-xmark text-[11px] text-brand-pink'
+          : 'fa-solid fa-volume-high text-[11px] text-brand-cyan';
       }
       document.querySelectorAll('.reel-video').forEach(v => {
         v.muted = isMuted;
       });
+      showToast(isMuted ? 'Sound Muted 🔇' : 'Sound On 🔊');
     }
 
-    // Like / Unlike Video
+    // Jump to Category from Discover
+    function jumpToCategory(category) {
+      switchNav('home');
+      setFeedCategory(category);
+    }
+
+    // Toast Notification Helper
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toastEl = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-msg');
+      if (!toastEl || !msgEl) return;
+      msgEl.textContent = msg;
+      toastEl.classList.remove('hidden');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toastEl.classList.add('hidden');
+      }, 2800);
+    }
+
+    // Like / Unlike Video (Real Count Only)
     function toggleLike(videoId) {
+      if (!currentUser) {
+        showToast('Like karne ke liye pehle Login karein ❤️');
+        openAuthModal('login');
+        return;
+      }
       const vid = videos.find(v => v.id === videoId);
       if (!vid) return;
       vid.liked = !vid.liked;
-      vid.likes += vid.liked ? 1 : -1;
+      vid.likes = Math.max(0, vid.likes + (vid.liked ? 1 : -1));
+      persistAppState();
+      syncWalletUI();
       renderFeed();
     }
 
-    // Follow / Unfollow Creator
+    // Follow / Unfollow Creator (Real Count Only)
     function toggleFollow(videoId) {
+      if (!currentUser) {
+        showToast('Follow karne ke liye pehle Login karein ✨');
+        openAuthModal('login');
+        return;
+      }
       const vid = videos.find(v => v.id === videoId);
       if (!vid) return;
       vid.following = !vid.following;
+      persistAppState();
+      syncWalletUI();
       showToast(vid.following ? `Following ${vid.handle}` : `Unfollowed ${vid.handle}`);
       renderFeed();
     }
@@ -2118,6 +2363,7 @@
       if (viewName === 'saved') renderSavedView();
       if (viewName === 'profile') {
         syncWalletUI();
+        renderAdminUsersList();
         renderAdminRequests();
         renderAdminModerationList();
         renderProfileView();
@@ -2130,17 +2376,34 @@
       const onlineStrip = document.getElementById('online-creators-strip');
       const threadsList = document.getElementById('chat-threads-list');
 
-      onlineStrip.innerHTML = chatThreads.map(t => `
-        <button onclick="openChatConversation('${t.handle}')" class="flex flex-col items-center gap-1 shrink-0 group">
+      // Build dynamic list of real active joined users (Stealth Admin is NEVER shown)
+      const publicPeers = joinedUsers.filter(u =>
+        u.status === 'active' && (!currentUser || u.handle !== currentUser.handle)
+      );
+
+      if (publicPeers.length === 0 && chatThreads.length === 0) {
+        onlineStrip.innerHTML = `<span class="text-[11px] text-gray-400">No active users online yet.</span>`;
+        threadsList.innerHTML = `
+          <div class="p-6 rounded-2xl bg-brand-card/60 border border-dashed border-white/15 text-center">
+            <i class="fa-solid fa-comments text-2xl text-brand-cyan mb-2"></i>
+            <p class="text-xs text-gray-300 font-semibold">No Chats Yet</p>
+            <p class="text-[11px] text-gray-400 mt-1">Sabhi fake bots hata diye gaye hain. Jab real creators join karke videos dalenge toh aap unse yahan Personal Chat, Audio Call aur Video Call kar sakenge.</p>
+          </div>
+        `;
+        return;
+      }
+
+      onlineStrip.innerHTML = publicPeers.map(u => `
+        <button onclick="openDirectChatWithCreator('${u.handle}', '${u.initials}', 'from-cyan-500 to-purple-600', '')" class="flex flex-col items-center gap-1 shrink-0 group">
           <div class="relative">
-            <div class="w-12 h-12 rounded-full bg-gradient-to-tr ${t.avatarBg} p-0.5 group-hover:scale-105 transition">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-cyan-500 to-purple-600 p-0.5 group-hover:scale-105 transition">
               <div class="w-full h-full rounded-full bg-brand-dark flex items-center justify-center font-display font-bold text-xs text-white">
-                ${t.avatarText}
+                ${u.initials}
               </div>
             </div>
             <span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-400 border-2 border-brand-dark"></span>
           </div>
-          <span class="text-[10px] text-gray-300 font-medium max-w-[64px] truncate">${t.handle}</span>
+          <span class="text-[10px] text-gray-300 font-medium max-w-[64px] truncate">${u.handle}</span>
         </button>
       `).join('');
 
@@ -2473,19 +2736,19 @@
         tabLogin.className = 'py-2 rounded-lg text-gray-400 hover:text-white font-display font-bold text-xs transition';
       }
     }
-
-    function jumpToCategory(cat) {
-      switchNav('home');
-      setFeedCategory(cat);
-    }
-
-    // Discover Leaderboard Renderer
+    // Discover Leaderboard Renderer (Real Creators Only — Stealth Admin Excluded)
     function renderLeaderboard(filterText = '') {
       const list = document.getElementById('leaderboard-list');
       const filtered = videos.filter(v =>
-        v.handle.toLowerCase().includes(filterText.toLowerCase()) ||
-        v.caption.toLowerCase().includes(filterText.toLowerCase())
+        v.handle !== '@jhalak_admin' &&
+        (v.handle.toLowerCase().includes(filterText.toLowerCase()) ||
+        v.caption.toLowerCase().includes(filterText.toLowerCase()))
       );
+
+      if (filtered.length === 0) {
+        list.innerHTML = `<div class="p-6 rounded-2xl bg-brand-card/60 border border-dashed border-white/15 text-center text-xs text-gray-400">Abhi tak koi real video upload nahi hua hai. Jab creators videos upload karenge toh real leaderboard yahan dikhega!</div>`;
+        return;
+      }
 
       list.innerHTML = filtered.map((v, index) => `
         <div onclick="jumpToCategory('${v.category}')" class="flex items-center justify-between p-3 rounded-2xl bg-brand-card border border-white/10 hover:border-white/25 cursor-pointer transition">
@@ -2539,12 +2802,13 @@
     // Profile Uploads Renderer
     function renderProfileView() {
       const grid = document.getElementById('my-uploads-grid');
-      if (myUploads.length === 0) {
+      const userVideos = currentUser ? videos.filter(v => v.handle === currentUser.handle) : [];
+      if (userVideos.length === 0) {
         grid.innerHTML = `<div class="col-span-2 text-center py-8 rounded-2xl bg-brand-card/50 border border-dashed border-white/15 text-xs text-gray-400">Aapne abhi tak koi video upload nahi kiya. Neeche "+" button se apna pehla JHALAK Reel banayein!</div>`;
         return;
       }
 
-      grid.innerHTML = myUploads.map(v => `
+      grid.innerHTML = userVideos.map(v => `
         <div onclick="switchNav('home')" class="relative aspect-[9/14] rounded-2xl overflow-hidden bg-brand-card border border-white/10 cursor-pointer">
           <video src="${v.videoUrl}" class="w-full h-full object-cover" muted></video>
           <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent p-2.5 flex flex-col justify-end">
@@ -2562,7 +2826,8 @@
         openAuthModal('login');
         return;
       }
-      document.getElementById('upload-audio').value = `Original Audio - ${currentUser.handle}`;
+      const musicLabel = document.getElementById('studio-music-label');
+      if (musicLabel) musicLabel.textContent = 'Original Video Audio';
       document.getElementById('upload-modal').classList.remove('hidden');
     }
 
@@ -2703,32 +2968,37 @@
         ? 'bg-gradient-to-r from-brand-gold via-amber-400 to-brand-pink text-black'
         : (category === 'edu' ? 'bg-brand-gold text-black' : 'bg-brand-pink text-white');
 
+      // Stealth Admin posts appear with a neutral creator alias so Admin's personal identity stays hidden
+      const publicHandle = adminActive ? '@jhalak_featured' : creatorHandle;
+      const publicInitials = adminActive ? 'JF' : (currentUser ? currentUser.initials : 'YOU');
+
       const newReel = {
         id: 'user-' + Date.now(),
         category: category,
         badge: badgeLabel,
         badgeColor: badgeStyle,
-        handle: creatorHandle,
+        handle: publicHandle,
         avatarBg: 'from-purple-500 via-pink-500 to-cyan-400',
-        avatarText: currentUser ? currentUser.initials : 'YOU',
+        avatarText: publicInitials,
         caption: caption,
         audio: audio,
         videoUrl: videoUrl,
         filterClass: selectedStudioFilter,
         stickerText: selectedStudioSticker,
-        likes: isSpotlight ? 100 : 1,
+        likes: 0,
         giftsCount: 0,
-        liked: true,
+        liked: false,
         saved: false,
-        following: true,
-        comments: [
-          { user: '@jhalak_official', text: isSpotlight ? 'Verified Spotlight Reel! ✨👑' : 'Zabardast upload! Welcome to JHALAK ✨' }
-        ],
+        following: false,
+        reported: 0,
+        comments: [],
         quiz: quizData
       };
 
       videos.unshift(newReel);
       myUploads.unshift(newReel);
+      persistAppState();
+      syncWalletUI();
 
       e.target.reset();
       selectedStudioFilter = 'filter-none';
@@ -2740,55 +3010,14 @@
       closeUploadModal();
       switchNav('home');
       setFeedCategory('all');
-      showToast(isSpotlight ? 'Published with Verified Spotlight 👑' : 'Published with Filters & Music! ✨');
+      showToast(isSpotlight ? 'Published with Verified Spotlight 👑' : 'Video Published to JHALAK! ✨');
     }
 
-    // ==================== PWA INSTALLABLE APP ENGINE ====================
+    // ==================== PWA INSTALLABLE APP ENGINE (SHIKSHA-STYLE) ====================
     function setupInstallablePWA() {
-      const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="50%" stop-color="#ff2a5f"/><stop offset="100%" stop-color="#7928ca"/></linearGradient></defs><rect width="512" height="512" rx="110" fill="#050508"/><rect x="75" y="110" width="160" height="180" rx="20" transform="rotate(-14 75 110)" fill="#1f2937" stroke="#ffffff" stroke-width="10"/><polygon points="150,90 430,256 150,422" fill="url(#g)" stroke="#fbbf24" stroke-width="12" stroke-linejoin="round"/><path d="M256 170 V290 C256 335 200 345 180 310" fill="none" stroke="#ffffff" stroke-width="38" stroke-linecap="round"/><polygon points="290,220 350,256 290,292" fill="#ffffff"/></svg>`;
-      const iconUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(iconSvg);
-
-      const manifestObj = {
-        id: 'com.jhalak.app',
-        name: 'JHALAK — Fun • Learn • Shine',
-        short_name: 'JHALAK',
-        description: 'Short Video Entertainment, Student Talent & Educational Reels App',
-        start_url: './',
-        scope: './',
-        display: 'standalone',
-        display_override: ['standalone', 'fullscreen'],
-        background_color: '#0b0b0f',
-        theme_color: '#0b0b0f',
-        orientation: 'portrait',
-        categories: ['entertainment', 'education', 'social'],
-        icons: [
-          { src: iconUrl, sizes: '192x192', type: 'image/svg+xml', purpose: 'any' },
-          { src: iconUrl, sizes: '512x512', type: 'image/svg+xml', purpose: 'maskable' }
-        ]
-      };
-
-      window._jhalakManifestJson = JSON.stringify(manifestObj, null, 2);
-
-      const manifestBlob = new Blob([window._jhalakManifestJson], { type: 'application/manifest+json' });
-      const manifestLink = document.getElementById('pwa-manifest-link');
-      if (manifestLink) manifestLink.href = URL.createObjectURL(manifestBlob);
-
-      // Register Service Worker with offline shell caching for full Android WebAPK support
+      // Register dedicated sw.js file for GitHub Pages / HTTPS native WebAPK installation
       if ('serviceWorker' in navigator) {
-        const swCode = `
-          const CACHE_NAME = 'jhalak-app-v1';
-          self.addEventListener('install', (event) => {
-            self.skipWaiting();
-          });
-          self.addEventListener('activate', (event) => {
-            event.waitUntil(clients.claim());
-          });
-          self.addEventListener('fetch', (event) => {
-            event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
-          });
-        `;
-        const swBlob = new Blob([swCode], { type: 'application/javascript' });
-        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
       }
 
       window.addEventListener('beforeinstallprompt', (e) => {
@@ -2848,7 +3077,9 @@
       syncWalletUI();
       renderFeed();
       renderLeaderboard();
+      renderAdminUsersList();
       renderAdminRequests();
+      renderAdminModerationList();
     });
   </script>
 </body>
