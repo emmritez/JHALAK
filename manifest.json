@@ -1,27 +1,28 @@
 {
-  "id": "/SHIKSHA/",
-  "name": "SHIKSHA Coaching Institute",
-  "short_name": "SHIKSHA",
-  "description": "Official Website, Student ERP, AI Assessments & Parent Portal - SHIKSHA Coaching Institute, Jhansi",
-  "start_url": "/SHIKSHA/index.html",
-  "scope": "/SHIKSHA/",
+  "id": "com.jhalak.app",
+  "name": "JHALAK — Fun • Learn • Shine",
+  "short_name": "JHALAK",
+  "description": "Short Video Entertainment, Student Talent & Educational Reels App",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "orientation": "any",
-  "background_color": "#090d16",
-  "theme_color": "#090d16",
-  "categories": ["education", "productivity"],
+  "display_override": ["standalone", "fullscreen"],
+  "background_color": "#0b0b0f",
+  "theme_color": "#0b0b0f",
+  "orientation": "portrait",
+  "categories": ["entertainment", "education", "social"],
   "icons": [
     {
-      "src": "./logo.png",
+      "src": "./image_685dcc.jpg",
       "sizes": "192x192",
-      "type": "image/png",
+      "type": "image/jpeg",
       "purpose": "any"
     },
     {
-      "src": "./logo.png",
+      "src": "./image_685dcc.jpg",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/jpeg",
+      "purpose": "maskable"
     }
   ]
 }
